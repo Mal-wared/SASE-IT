@@ -26,3 +26,50 @@ nav a:hover {
 main {
     padding: 20px;
 }
+
+.side-panel-left {
+    position: fixed;
+    top: 57px;
+    left: 0;
+    height: 100%;
+    width: 200px; /* Adjust the width as needed */
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    z-index: 1; /* Ensure the side panel is above other content */
+}
+
+.side-panel-right {
+    display: none;
+    position: fixed;
+    top: 57px;
+    right: 0;
+    height: 100%;
+    width: 200px; /* Adjust the width as needed */
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    z-index: 1; /* Ensure the side panel is above other content */
+}
+
+@media screen and (min-width: 700px) {
+    .side-panel-right {
+        display: block; /* Show the side panel */
+    }
+
+    /* Adjust the margin for the content area to make space for the side panel on the right side */
+    .content {
+        margin-right: 220px; /* Adjust according to the width of the side panel plus some extra space */
+    }
+}
+
+/* Style for the content area */
+.content {
+    margin-left: 240px; /* Adjust according to the width of the side panel */
+    padding: 0px;
+}
+
+/* Style for the heading */
+h1 {
+    color: #333;
+}
