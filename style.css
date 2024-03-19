@@ -11,16 +11,22 @@ header {
 nav {
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 
 nav a {
     text-decoration: none;
     color: black;
     padding: 10px;
+    margin-left:auto;
 }
 
 nav a:hover {
     background-color: #e0e0e0;
+}
+
+nav p {
+    margin: 0;
 }
 
 main {
