@@ -4,6 +4,8 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
+
+# dictionary that holds task information
 coursework_list = {
     "coursework_list":{
         "phys 1441":{
@@ -20,6 +22,7 @@ coursework_list = {
         }
     }   
 }
+
 
 def add_list(title):
     coursework_list[title]={}

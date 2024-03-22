@@ -79,3 +79,14 @@ main {
 h1 {
     color: #333;
 }
+
+.side-panel-left ul {
+    list-style-type: none; /* Remove bullet points */
+    padding: 0;
+    margin: 0;
+}
+
+.list_item {
+    display: flex;
+    align-items: center;
+}
