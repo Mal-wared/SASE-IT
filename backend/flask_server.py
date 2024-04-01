@@ -41,6 +41,7 @@ def add_task(title,subtitle,task_list,task):
 def index():
     return jsonify(coursework_list)
 
+
 if __name__ == '__main__':
     app.run(debug=True)
 
