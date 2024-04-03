@@ -53,8 +53,9 @@ def index():
     return jsonify(course_list)
 
 # @app.route('/change_list', METHODS=["POST"])
-# def index():
+# def index() (test, remove me pls):
 #     add_course("Course Name from Request")
+
 
 if __name__ == '__main__':
     app.run(debug=True)
