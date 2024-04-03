@@ -8,14 +8,12 @@ function call(){
     .then(function (data) {
         coursework = data;
         console.log(coursework);
-        console.log(coursework.length);
 
         var i = 0;
         document.getElementById('lists').innerHTML = '';
         // Display the data on client
         for (var key in coursework){
             // Create a new list item element'
-            
             var new_div = document.createElement('div');
             var new_butt = document.createElement('button');
             new_butt.innerHTML = "V";
