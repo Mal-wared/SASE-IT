@@ -4,42 +4,57 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-
 # dictionary that holds task information
-coursework_list = {
-    "coursework_list":{
-        "phys 1441":{
-            "assessments":
-                ["14.1","14.2","14.3","14 Exam"],
-            "homework":
-                ["14.1 Linear","14.2 Alternative","14.3 meme"]
-        },
-        "phys 1442":{
-            "assessments":
-                ["14,1","14,2"],
-            "homework":
-                ["15.2","15.3"],
-        }
-    }   
+course_list = {
+    "phys_2111":{
+        "homework":
+            [{"name": "14.1","date": "02-20-2024"},{"name": "template", "date": "due date"}],
+        "quizzes/tests":
+            [{"Exam": "Exam 1", "Date": "due-date"}]
+    },
+    "phys_2222": {
+        "homework":[],
+        "quizzes/tests":[]
+    }
 }
 
+def add_course(course_name):
+    course_list[course_name] = {"homework":[],"quizzes/tests":[]}
 
-def add_list(title):
-    coursework_list[title]={}
+def remove_course(course_name):
+    course_list.pop(course_name)
 
-def add_sublist(title, subtitle ):
-    coursework_list[title][subtitle]={}
+def add_homework(course_name, hw, date):
+    course_list[course_name]["homework"].append({"name":hw, "date":date})
 
-def add_tasklist(title,subtitle,task_list):
-    coursework_list[title][subtitle][task_list]=[]
+def remove_homework(course_name, hw):
+    for assignment in course_list[course_name]["homework"]:
+        if assignment["name"] == hw:
+            course_list[course_name]["homework"].remove(assignment)
 
-def add_task(title,subtitle,task_list,task):
-    coursework_list[title][subtitle][task_list].append(task)
+def add_quiz(course_name, exam, date):
+    course_list[course_name]["quizzes/tests"].append({"Exam":exam, "date":date})
+
+def remove_quiz(course_name, quiz_name):
+    for quiz in course_list[course_name]["quizzes/tests"]:
+        if quiz["Exam"] == quiz_name:
+            course_list[course_name]["quizzes/tests"].remove(quiz)
+    print(course_list)
 
 #Server side
 @app.route('/get_lists')
 def index():
-    return jsonify(coursework_list)
+    # remove_homework("phys_2111", "14.1")
+    # print(course_list)
+
+    # remove_quiz("phys_2111", "Exam 1")
+    # print(course_list)
+
+    return jsonify(course_list)
+
+# @app.route('/change_list', METHODS=["POST"])
+# def index():
+#     add_course("Course Name from Request")
 
 
 if __name__ == '__main__':
