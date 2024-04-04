@@ -51,6 +51,7 @@ def get_lists():
     # print(course_list)
     return jsonify(course_list)
 
+
 @app.route('/add', methods=["POST"])
 def add_course_url():
     data = request.json
@@ -71,6 +72,7 @@ def add_course_url():
         exam_date = data["ex_date"]
         add_quiz(course_name,new_exam,exam_date)
     return jsonify(course_list)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
