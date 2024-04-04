@@ -20,12 +20,17 @@ function display_courses(coursework){
     document.getElementById('lists').innerHTML = '';
     // Display the data on client
     for (var key in coursework){
-        // Create a new list item element'
+        // Create a new list item element
         var new_div = document.createElement('div');
         var new_butt = document.createElement('button');
         new_butt.innerHTML = "V";
         new_butt.id = key;
+        
+        new_butt.isClicked;
+        new_butt.isClickNew;
         new_butt.onclick = display_sublists;
+        
+
         var new_li = document.createElement('li');
         new_li.innerHTML = key;
 
@@ -38,22 +43,49 @@ function display_courses(coursework){
 }
 
 function display_sublists(e){
-    for (var key in coursework[e.target.id]){
-        // Create a new list item element'
-        var new_div = document.createElement('div');
-        var new_butt = document.createElement('button');
-        new_butt.innerHTML = "V";
-        new_butt.id = key;
-        new_butt.onclick = display_sublists;
-        var new_li = document.createElement('li');
-        new_li.innerHTML = key;
-
-        new_div.className = "list_item";
-        new_div.appendChild(new_butt);
-        new_div.appendChild(new_li);
-
-        e.target.parentNode.appendChild(new_div);
+    if(e.target.isClicked){
+        e.target.parentNode.childNodes.forEach(function(child){
+            if(child.className == "list_item"){
+                child.style.display = "none";
+            }
+        });
+        e.target.isClicked = false;
+        console.log("Hiding sublists");
     }
+    else if(!e.target.isClickedNew){
+        e.target.parentNode.childNodes.forEach(function(child){
+            if(child.className == "list_item"){
+                child.style.display = "block";
+            }
+        });
+        e.target.isClicked = true;
+        console.log("Showing sublists");
+    }
+    
+    if(e.target.isClickNew == null){
+        for (var key in coursework[e.target.id]){
+            // Create a new list item element'
+            var new_div = document.createElement('div');
+            var new_butt = document.createElement('button');
+            new_butt.innerHTML = "V";
+            new_butt.id = key;
+            new_butt.onclick = display_sublists;
+            var new_li = document.createElement('li');
+            new_li.innerHTML = key;
+
+            new_div.className = "list_item";
+            new_div.appendChild(new_butt);
+            new_div.appendChild(new_li);
+
+            e.target.parentNode.appendChild(new_div);
+        }
+        e.target.isClickNew = false;
+        e.target.isClicked = true;
+        console.log("Creating sublists");
+    }
+
+    
+    
 }
 
 function add_course(){
