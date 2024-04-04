@@ -1,8 +1,72 @@
-from flask import Flask, render_template,jsonify, request
+from flask import Flask,jsonify, request
 from flask_cors import CORS
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from tables import Base, User, Course, Homework, Quiz
+import os
+import re
 
 app = Flask(__name__)
 CORS(app)
+
+directory = 'backend'
+db_filename = 'User.db'
+db_path = f"{os.path.join(os.getcwd(), directory, db_filename)}"
+
+# Create an engine object to connect to the SQLite database
+engine = create_engine(f"sqlite:///{db_path}")
+
+# Create a session
+Session = sessionmaker(bind=engine)
+session = Session()
+
+# Query the data
+users = session.query(User).all()
+courses = session.query(Course).all()
+homeworks = session.query(Homework).all()
+quizzes = session.query(Quiz).all()
+
+# for user in users:
+#     print(f'{user.id}:{user.username}')
+
+
+def login(username, password):
+    for user in users:
+        if user.username == username and user.password == password:
+            return True
+    return False
+
+def signup(new_username, new_password, new_email):
+    #Check if username is taken
+
+    for user in users:
+        if user.username == new_username:
+            print("Username already exists")
+            return False
+    
+    #Check if password is valid (above 6 charcaters)
+    if (len(new_password) < 6):
+        print("Password invalid, need to be at least 6 characters")
+        return False
+
+    #Check if email is valid (Chatgpt)
+    pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
+    
+    # Use re.match to check if the email matches the pattern
+    if not re.match(pattern, new_email):
+        print("Please input valid email")
+        return False
+
+    #Open session with database
+    new_user = User(username = new_username, password=new_password, email = new_email )
+    session.add(new_user)
+    session.commit()
+    session.close()
+
+signup('Dan', 'djfdsfff', 'sdfljail.com')
+users = session.query(User).all()
+for user in users:
+    print(f'{user.id}:{user.username}')
 
 # dictionary that holds task information
 course_list = {
@@ -60,7 +124,6 @@ def add_course_url():
         course_name = data["course_name"]
         #print(course_name)
         add_course(course_name)
-        
     elif(data["action"] == "add_homework"):
         course_name = data["course_name"]
         new_hw = data["hw_name"]
