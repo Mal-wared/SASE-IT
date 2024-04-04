@@ -1,4 +1,4 @@
-from flask import Flask, render_template,jsonify
+from flask import Flask, render_template,jsonify, request
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -43,18 +43,35 @@ def remove_quiz(course_name, quiz_name):
 
 #Server side
 @app.route('/get_lists')
-def index():
+def get_lists():
     # remove_homework("phys_2111", "14.1")
     # print(course_list)
 
     # remove_quiz("phys_2111", "Exam 1")
     # print(course_list)
-
     return jsonify(course_list)
 
-# @app.route('/change_list', METHODS=["POST"])
-# def index() (test, remove me pls):
-#     add_course("Course Name from Request")
+
+@app.route('/add', methods=["POST"])
+def add_course_url():
+    data = request.json
+    print(data)
+    if(data["action"] == "add_course"):
+        course_name = data["course_name"]
+        #print(course_name)
+        add_course(course_name)
+        
+    elif(data["action"] == "add_homework"):
+        course_name = data["course_name"]
+        new_hw = data["hw_name"]
+        date = data["date"]
+        add_homework(course_name, new_hw, date)
+    elif(data["action"]=="add_exam"):
+        course_name = data["course_name"]
+        new_exam = data["ex_name"]
+        exam_date = data["ex_date"]
+        add_quiz(course_name,new_exam,exam_date)
+    return jsonify(course_list)
 
 
 if __name__ == '__main__':
