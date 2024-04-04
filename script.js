@@ -48,9 +48,7 @@ function display_courses(coursework){
 }
 
 function display_sublists(e){
-    
-    
-    if(e.target.isClickNew == null){
+    if(e.target.isClicked == null){
         for (var key in coursework[e.target.id]){
             // Create a new list item element'
             var new_div = document.createElement('div');
@@ -88,8 +86,6 @@ function display_sublists(e){
         e.target.isClicked = true;
         console.log("Showing sublists");
     }
-    
-    
 }
 
 function add_course(){
