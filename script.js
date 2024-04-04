@@ -26,8 +26,13 @@ function display_courses(coursework){
         new_butt.innerHTML = "V";
         new_butt.id = key;
         
+        // Added custom attribute to the button "isClicked"
+        // isClicked is used to determine if the button has been clicked
+        //          if null, create sublists
+        //          if true, hide sublists
+        //          if false, show sublists
+        //          I realize in hindsight this is a horrible var name change it if you want
         new_butt.isClicked;
-        new_butt.isClickNew;
         new_butt.onclick = display_sublists;
         
 
@@ -43,24 +48,7 @@ function display_courses(coursework){
 }
 
 function display_sublists(e){
-    if(e.target.isClicked){
-        e.target.parentNode.childNodes.forEach(function(child){
-            if(child.className == "list_item"){
-                child.style.display = "none";
-            }
-        });
-        e.target.isClicked = false;
-        console.log("Hiding sublists");
-    }
-    else if(!e.target.isClickedNew){
-        e.target.parentNode.childNodes.forEach(function(child){
-            if(child.className == "list_item"){
-                child.style.display = "block";
-            }
-        });
-        e.target.isClicked = true;
-        console.log("Showing sublists");
-    }
+    
     
     if(e.target.isClickNew == null){
         for (var key in coursework[e.target.id]){
@@ -79,11 +67,27 @@ function display_sublists(e){
 
             e.target.parentNode.appendChild(new_div);
         }
-        e.target.isClickNew = false;
         e.target.isClicked = true;
         console.log("Creating sublists");
     }
-
+    else if(e.target.isClicked){
+        e.target.parentNode.childNodes.forEach(function(child){
+            if(child.className == "list_item"){
+                child.style.display = "none";
+            }
+        });
+        e.target.isClicked = false;
+        console.log("Hiding sublists");
+    }
+    else if(!e.target.isClicked){
+        e.target.parentNode.childNodes.forEach(function(child){
+            if(child.className == "list_item"){
+                child.style.display = "block";
+            }
+        });
+        e.target.isClicked = true;
+        console.log("Showing sublists");
+    }
     
     
 }
