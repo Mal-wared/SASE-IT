@@ -34,7 +34,6 @@ function display_courses(coursework){
         //          I realize in hindsight this is a horrible var name change it if you want
         new_butt.isClicked;
         new_butt.onclick = display_sublists;
-        
 
         var new_li = document.createElement('li');
         new_li.innerHTML = key;
@@ -59,7 +58,7 @@ function display_sublists(e){
             var new_li = document.createElement('li');
             new_li.innerHTML = key;
 
-            new_div.className = "list_item";
+            new_div.className = "folder_list_item";
             new_div.appendChild(new_butt);
             new_div.appendChild(new_li);
 
@@ -70,7 +69,7 @@ function display_sublists(e){
     }
     else if(e.target.isClicked){
         e.target.parentNode.childNodes.forEach(function(child){
-            if(child.className == "list_item"){
+            if(child.className == "folder_list_item"){
                 child.style.display = "none";
             }
         });
@@ -79,7 +78,7 @@ function display_sublists(e){
     }
     else if(!e.target.isClicked){
         e.target.parentNode.childNodes.forEach(function(child){
-            if(child.className == "list_item"){
+            if(child.className == "folder_list_item"){
                 child.style.display = "block";
             }
         });

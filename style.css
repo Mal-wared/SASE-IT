@@ -87,6 +87,10 @@ h1 {
 }
 
 .list_item {
-    display: flex;
+    display: block;
     align-items: center;
+}
+
+.folder_list_item {
+    display: block;
 }
