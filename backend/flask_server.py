@@ -1,6 +1,6 @@
 from flask import Flask,jsonify, request
 from flask_cors import CORS
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, MetaData, Table
 from sqlalchemy.orm import sessionmaker
 from tables import Base, User, Course, Homework, Quiz
 import os
@@ -26,10 +26,23 @@ courses = session.query(Course).all()
 homeworks = session.query(Homework).all()
 quizzes = session.query(Quiz).all()
 
-# for user in users:
-#     print(f'{user.id}:{user.username}')
+course_list = {
+    "phys_2111": {
+        "homework": [
+            {"name": "14.1", "date": "02-20-2024"},
+            {"name": "template", "date": "due date"}
+        ],
+        "quizzes_tests": [
+            {"name": "Exam 1", "date": "due-date"}
+        ]
+    },
+    "phys_2222": {
+        "homework": [],
+        "quizzes_tests": []
+    }
+}
 
-
+# Given the user-input username and password, check to see if it's inside of the database. If true, then return True,  otherwise return False
 def login(username, password):
     for user in users:
         if user.username == username and user.password == password:
@@ -37,8 +50,8 @@ def login(username, password):
     return False
 
 def signup(new_username, new_password, new_email):
-    #Check if username is taken
 
+    #Check if username is taken
     for user in users:
         if user.username == new_username:
             print("Username already exists")
@@ -58,91 +71,181 @@ def signup(new_username, new_password, new_email):
         return False
 
     #Open session with database
-    new_user = User(username = new_username, password=new_password, email = new_email )
+    new_user = User(username = new_username, password=new_password, email = new_email)
+    #Add to database
     session.add(new_user)
+    #Commit to database
+    session.commit()
+    #Close database
+    session.close()
+
+# Given the user's ID and the course name, add the course under the specified user's table
+def add_course(user_id, course_name):
+    # Check if the user exists
+    user = session.query(User).filter_by(id=user_id).first()
+    if not user:
+        print("User doesn't exist.")
+        return False
+    
+    # Check if course already exists for that specific user
+    course = session.query(Course).filter_by(user_id=user_id, coursename = course_name).first()
+    if course:
+        print("Course already exists for this user.")
+        return False
+    
+    # Create a new Course object
+    new_course = Course(coursename=course_name, user_id=user_id)
+
+    # Add and commit the new course to the database, and close the session
+    session.add(new_course)
     session.commit()
     session.close()
 
-signup('Dan', 'djfdsfff', 'sdfljail.com')
-users = session.query(User).all()
-for user in users:
-    print(f'{user.id}:{user.username}')
+    # Add course to course_list
+    # course_list[course_name] = {"homework":[],"quizzes/tests":[]}
 
-# dictionary that holds task information
-course_list = {
-    "phys_2111":{
-        "homework":
-            [{"name": "14.1","date": "02-20-2024"},{"name": "template", "date": "due date"}],
-        "quizzes/tests":
-            [{"Exam": "Exam 1", "Date": "due-date"}]
-    },
-    "phys_2222": {
-        "homework":[],
-        "quizzes/tests":[]
-    }
-}
+    return True
 
-def add_course(course_name):
+# Given the user's ID and the course name, remove the course from the specified user's table
+def remove_course(user_id, course_name):
+    course = session.query(Course).filter_by(user_id=user_id, coursename = course_name).first()
+    if course:
+
+        # Delete the new course to the database and commit changes
+        session.delete(course)
+        session.commit()
+    session.close()
+
+    # Remove from course_list
+    # course_list.pop(course_name)
+
+# Given the course ID and the homework name, add the homework under the specified course table
+def add_homework(course_id, course_name, hw_name, due_date):
+    # Check if the homework exists
+    course = session.query(Course).filter_by(id=course_id).first()
+    if not course:
+        print("Course doesn't exist.")
+        return False
+    
+    # Check if homework already exists for that specific user
+    homework = session.query(Homework).filter_by(course_id=course_id, title = hw_name, duedate=due_date).first()
+    if homework:
+        print("Homework already exists for this course.")
+        return False
+    
+    # Create a new Homework object
+    new_homework = Homework(title = hw_name, duedate=due_date, course_id=course_id)
+
+    # Add and commit the new course to the database, and close the session
+    session.add(new_homework)
+    session.commit()
+    session.close()
+
+    # Add course to course_list
     course_list[course_name] = {"homework":[],"quizzes/tests":[]}
 
-def remove_course(course_name):
-    course_list.pop(course_name)
+    return True
 
-def add_homework(course_name, hw, date):
-    course_list[course_name]["homework"].append({"name":hw, "date":date})
+    # course_list[course_name]["homework"].append({"name":hw, "date":date})
 
-def remove_homework(course_name, hw):
-    for assignment in course_list[course_name]["homework"]:
-        if assignment["name"] == hw:
-            course_list[course_name]["homework"].remove(assignment)
+# Given the course ID and the homework name, remove the homework under the specified course table
+def remove_homework(course_id, course_name, hw_name):
+    homework = session.query(Homework).filter_by(course_id=course_id, title = hw_name).first()
+    if homework:
 
-def add_quiz(course_name, exam, date):
-    course_list[course_name]["quizzes/tests"].append({"Exam":exam, "date":date})
+        # Delete the homework from the database and commit changes
+        session.delete(homework)
+        session.commit()
+    session.close()
 
-def remove_quiz(course_name, quiz_name):
-    for quiz in course_list[course_name]["quizzes/tests"]:
-        if quiz["Exam"] == quiz_name:
-            course_list[course_name]["quizzes/tests"].remove(quiz)
-    print(course_list)
+    # for assignment in course_list[course_name]["homework"]:
+    #     if assignment["name"] == hw:
+    #         course_list[course_name]["homework"].remove(assignment)
+
+# Given the course ID and the quiz name, add the quiz under the specified course table
+def add_quiz(course_id, course_name, quiz_name, due_date):
+
+    # Check if the course exists
+    course = session.query(Course).filter_by(id=course_id).first()
+    if not course:
+        print("Course doesn't exist.")
+        return False
+    
+    # Check if homework already exists for that specific user
+    quiz = session.query(Quiz).filter_by(course_id=course_id, title = quiz_name, duedate=due_date).first()
+    if quiz:
+        print("Quiz already exists for this course.")
+        return False
+    
+    # Create a new Quiz object
+    new_quiz = Quiz(title = quiz_name, duedate=due_date, course_id=course_id)
+
+    # Add and commit the new quiz to the database, and close the session
+    session.add(new_quiz)
+    session.commit()
+    session.close()
+
+    # Add course to course_list
+    #course_list[course_name]["quizzes/tests"].append({"Exam":quiz_name, "date":due_date})
+
+    return True
+
+# Given the course ID and the quiz name, remove the quiz under the specified course table
+def remove_quiz(course_id, course_name, quiz_name):
+    quiz = session.query(Quiz).filter_by(course_id=course_id, title = quiz_name).first()
+    if quiz:
+
+        # Delete the quiz from the database and commit changes
+        session.delete(quiz)
+        session.commit()
+    session.close()
+
+    # for quiz in course_list[course_name]["quizzes/tests"]:
+    #     if quiz["Exam"] == quiz_name:
+    #         course_list[course_name]["quizzes/tests"].remove(quiz)
+    # print(course_list)
 
 #Server side
 @app.route('/get_lists')
 def get_lists():
-    # remove_homework("phys_2111", "14.1")
-    # print(course_list)
-
-    # remove_quiz("phys_2111", "Exam 1")
-    # print(course_list)
     return jsonify(course_list)
 
+## Parse through every user in the database and display their course, homework, and quiz
+## Done with ChatGPT because I was too lazy to code it. Use only for reference and in understanding the database
+@app.route('/database')
+def database():
+    user_course_info = {}
 
-@app.route('/add', methods=["POST"])
-def add_course_url():
-    data = request.json
-    print(data)
-    if(data["action"] == "add_course"):
-        course_name = data["course_name"]
-        #print(course_name)
-        add_course(course_name)
-    elif(data["action"] == "add_homework"):
-        course_name = data["course_name"]
-        new_hw = data["hw_name"]
-        date = data["date"]
-        add_homework(course_name, new_hw, date)
-    elif(data["action"]=="add_exam"):
-        course_name = data["course_name"]
-        new_exam = data["ex_name"]
-        exam_date = data["ex_date"]
-        add_quiz(course_name,new_exam,exam_date)
-    return jsonify(course_list)
+
+    for user in users:
+        user_courses = []
+        courses = session.query(Course).filter_by(user_id=user.id).all()
+        for course in courses:
+            course_info = {
+                "coursename": course.coursename,
+                "course_id": course.id,
+                "homeworks": [],
+                "quizzes": []
+            }
+            homeworks = session.query(Homework).filter_by(course_id=course.id).all()
+            for homework in homeworks:
+                course_info["homeworks"].append({
+                    "title": homework.title,
+                    "duedate": homework.duedate
+                })
+            quizzes = session.query(Quiz).filter_by(course_id=course.id).all()
+            for quiz in quizzes:
+                course_info["quizzes"].append({
+                    "title": quiz.title,
+                    "date": quiz.date
+                })
+            course_info["homeworks"] = course_info["homeworks"]
+            course_info["quizzes"] = course_info["quizzes"]
+            user_courses.append(course_info)
+        user_course_info[user.username] = user_courses
+    return jsonify(user_course_info)
+
 
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-
-
-
-
-
-

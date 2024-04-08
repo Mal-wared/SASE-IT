@@ -1,4 +1,5 @@
 from sqlalchemy import create_engine, Column, Integer, String, ForeignKey
+from sqlalchemy.orm import sessionmaker, relationship
 from sqlalchemy.ext.declarative import declarative_base
 import os
 
@@ -23,35 +24,35 @@ Base = declarative_base()
 class User(Base):
     __tablename__ = 'users'
 
-    id = Column(Integer, primary_key = True)
-    username = Column(String)
-    password = Column(String)
-    email = Column(String)
-
-    courses = ()
+    id          = Column(Integer, primary_key = True)
+    username    = Column(String)
+    password    = Column(String)
+    email       = Column(String)
+    courses     = relationship("Course", backref="user")
 
 class Course(Base):
     __tablename__ = 'courses'
 
-    id = Column(Integer, primary_key = True)
-    coursename = Column(String)
-    user_id = Column(Integer, ForeignKey('users.id'))
+    id          = Column(Integer, primary_key = True)
+    coursename  = Column(String)
+    user_id     = Column(Integer, ForeignKey('users.id'))
 
 class Homework(Base):
     __tablename__= 'homeworks'
 
-    id = Column(Integer, primary_key = True)
-    title = Column(String)
-    duedate = Column(String)
-    course_id = Column(Integer, ForeignKey('courses.id'))
+    id          = Column(Integer, primary_key = True)
+    title       = Column(String)
+    duedate     = Column(String)
+    course_id   = Column(Integer, ForeignKey('courses.id'))
 
 class Quiz(Base):
     __tablename__= 'quizzes'
 
-    id = Column(Integer, primary_key = True)
-    title = Column(String)
-    date = Column(String)
-    course_id = Column(Integer, ForeignKey('courses.id'))
+    id          = Column(Integer, primary_key = True)
+    title       = Column(String)
+    date        = Column(String)
+    course_id   = Column(Integer, ForeignKey('courses.id'))
 
 # Create the tables in the database
 Base.metadata.create_all(engine)
+
