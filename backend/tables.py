@@ -1,4 +1,5 @@
 from sqlalchemy import create_engine, Column, Integer, String, ForeignKey
+from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 import os
 
@@ -27,8 +28,7 @@ class User(Base):
     username = Column(String)
     password = Column(String)
     email = Column(String)
-
-    courses = ()
+    courses = relationship("Course", backref="user")
 
 class Course(Base):
     __tablename__ = 'courses'
