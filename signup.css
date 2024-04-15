@@ -38,3 +38,10 @@ body {
 .login-container button:hover {
     background-color: #343a40;
 }
+header {
+    background-color: #f0f0f0;
+    padding: 3px;
+    position:fixed; 
+    top: 0; 
+    width:100%; 
+}
