@@ -19,8 +19,9 @@ nav a {
     text-decoration: none;
     color: black;
     padding: 10px;
-    margin-left:auto;
     font-size: 20px;
+    margin-left: 15px;
+    margin-right: 15px;
     
 }
 
