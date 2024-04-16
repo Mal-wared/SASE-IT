@@ -22,7 +22,8 @@ nav a {
     padding: 8px;
     font-size: 25px;
     white-space: nowrap;
-    
+    margin-left: 5px;
+    margin-right: 5px;
 }
 
 header nav img{
