@@ -101,23 +101,16 @@ def add_course(user_id, course_name):
     session.commit()
     session.close()
 
-    # Add course to course_list
-    # course_list[course_name] = {"homework":[],"quizzes/tests":[]}
-
     return True
 
 # Given the user's ID and the course name, remove the course from the specified user's table
 def remove_course(user_id, course_name):
     course = session.query(Course).filter_by(user_id=user_id, coursename = course_name).first()
     if course:
-
         # Delete the new course to the database and commit changes
         session.delete(course)
         session.commit()
     session.close()
-
-    # Remove from course_list
-    # course_list.pop(course_name)
 
 # Given the course ID and the homework name, add the homework under the specified course table
 def add_homework(course_id, course_name, hw_name, due_date):
@@ -210,12 +203,15 @@ def remove_quiz(course_id, course_name, quiz_name):
 def get_lists():
     return jsonify(course_list)
 
+@app.route('/add_course', methods=["POST"])
+def user_add_course():
+    pass
+
 ## Parse through every user in the database and display their course, homework, and quiz
 ## Done with ChatGPT because I was too lazy to code it. Use only for reference and in understanding the database
 @app.route('/database')
 def database():
     user_course_info = {}
-
 
     for user in users:
         user_courses = []
@@ -244,8 +240,6 @@ def database():
             user_courses.append(course_info)
         user_course_info[user.username] = user_courses
     return jsonify(user_course_info)
-
-
 
 if __name__ == '__main__':
     app.run(debug=True)

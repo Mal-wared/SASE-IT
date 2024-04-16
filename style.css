@@ -1,10 +1,11 @@
 body {
     font-family: sans-serif;
     margin: 0;
+    background-color: #D9D9D9;
 }
 
 header {
-    background-color: #f0f0f0;
+    background-color: #292A41;
     padding: 10px;
 }
 
@@ -16,13 +17,25 @@ nav {
 
 nav a {
     text-decoration: none;
-    color: black;
-    padding: 10px;
-    margin-left:auto;
+    color: white;
+    padding-bottom: 2px;
+    padding: 8px;
+    font-size: 25px;
+    white-space: nowrap;
+    margin-left: 5px;
+    margin-right: auto;
+}
+
+header nav img{
+    width: 15%; 
+    margin-right: 50%; 
+    margin-left: 2%;
+    margin-bottom: 10px;
+    margin-top: 10px;
 }
 
 nav a:hover {
-    background-color: #e0e0e0;
+    background-color: rgb(132, 122, 122)
 }
 
 nav p {
@@ -35,28 +48,16 @@ main {
 
 .side-panel-left {
     position: fixed;
-    top: 57px;
+    top: 95 px;
     left: 0;
     height: 100%;
     width: 200px; /* Adjust the width as needed */
-    background-color: #333;
+    background-color: #313A2E;
     color: white;
     padding: 10px;
     z-index: 1; /* Ensure the side panel is above other content */
 }
 
-.side-panel-right {
-    display: none;
-    position: fixed;
-    top: 57px;
-    right: 0;
-    height: 100%;
-    width: 200px; /* Adjust the width as needed */
-    background-color: #333;
-    color: white;
-    padding: 10px;
-    z-index: 1; /* Ensure the side panel is above other content */
-}
 
 @media screen and (min-width: 700px) {
     .side-panel-right {
