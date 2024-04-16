@@ -165,3 +165,7 @@ function send_post_request(data){
         display_courses(data);
     })
 }
+
+function goHome(){
+    window.location.href = "landingpage.html";
+}
