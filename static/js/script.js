@@ -1,14 +1,14 @@
 var coursework = {};
 
 function call(){
-    fetch('http://127.0.0.1:5000/get_lists')
+    fetch('http://127.0.0.1:5000/grab_user_info')
     .then(function (response) {
         return response.json();
     })
     .then(function (data) {
         coursework = data;
         console.log(coursework);
-        display_courses(coursework);
+        display_lists(coursework);
         create_content(coursework);
 
     })
@@ -17,7 +17,7 @@ function call(){
     });
 }
 
-function display_courses(coursework){
+function display_lists(coursework){
     var i = 0;
     document.getElementById('lists').innerHTML = '';
     // Display the data on client
@@ -35,7 +35,7 @@ function display_courses(coursework){
         //          if false, show sublists
         //          I realize in hindsight this is a horrible var name change it if you want
         new_butt.isClicked;
-        new_butt.onclick = display_sublists;
+        new_butt.onclick = display_course;
 
         var new_li = document.createElement('li');
         new_li.innerHTML = key;
@@ -48,70 +48,75 @@ function display_courses(coursework){
     }
 }
 
-function display_sublists(e){
-    if(e.target.isClicked == null){
-        for (var key in coursework[e.target.id]){
-            // Create a new list item element'
-            var new_div = document.createElement('div');
-            var new_butt = document.createElement('button');
-            new_butt.innerHTML = "V";
-            new_butt.id = key;
-            new_butt.onclick = display_sublists;
-            var new_li = document.createElement('li');
-            new_li.innerHTML = key;
+function display_course(e){
 
-            new_div.className = "folder_list_item";
-            new_div.appendChild(new_butt);
-            new_div.appendChild(new_li);
-
-            e.target.parentNode.appendChild(new_div);
-        }
-        e.target.isClicked = true;
-        console.log("Creating sublists");
-    }
-    else if(e.target.isClicked){
-        e.target.parentNode.childNodes.forEach(function(child){
-            if(child.className == "folder_list_item"){
-                child.style.display = "none";
-            }
-        });
-        e.target.isClicked = false;
-        console.log("Hiding sublists");
-    }
-    else if(!e.target.isClicked){
-        e.target.parentNode.childNodes.forEach(function(child){
-            if(child.className == "folder_list_item"){
-                child.style.display = "block";
-            }
-        });
-        e.target.isClicked = true;
-        console.log("Showing sublists");
-    }
 }
 
-// Displays the content of the dictionary
-// function create_content(coursework){
-//     // Create the header(s)
-//     document.getElementById('content_header').innerHTML = Object.keys(coursework)[0];
-//     document.getElementById('content').innerHTML = '';
-    
-//     // Create the content based on the keys in the coursework object
-//     for (var key in coursework["phys_2111"]){
-//         var new_div = document.createElement("div");
-//         var key_header = document.createElement("h2");
-//         key_header.innerHTML = key;
-//         new_div.appendChild(key_header);
-//         document.getElementById('content').appendChild(new_div);
-//         current_coursework = coursework["phys_2111"];
-//         for(var idx in current_coursework[key]){
-//             var coursework_div = document.createElement("div");
-//             var homework_title = document.createElement("p");
-//             homework_title.innerHTML = current_coursework[key][idx]["name"];
-//             coursework_div.appendChild(homework_title);
-//             new_div.appendChild(coursework_div);
+// function display_sublists(e){
+//     if(e.target.isClicked == null){
+//         for (var key in coursework[e.target.id]){
+//             // Create a new list item element'
+//             var new_div = document.createElement('div');
+//             var new_butt = document.createElement('button');
+//             new_butt.innerHTML = "V";
+//             new_butt.id = key;
+//             new_butt.onclick = display_sublists;
+//             var new_li = document.createElement('li');
+//             new_li.innerHTML = key;
+
+//             new_div.className = "folder_list_item";
+//             new_div.appendChild(new_butt);
+//             new_div.appendChild(new_li);
+
+//             e.target.parentNode.appendChild(new_div);
 //         }
+//         e.target.isClicked = true;
+//         console.log("Creating sublists");
+//     }
+//     else if(e.target.isClicked){
+//         e.target.parentNode.childNodes.forEach(function(child){
+//             if(child.className == "folder_list_item"){
+//                 child.style.display = "none";
+//             }
+//         });
+//         e.target.isClicked = false;
+//         console.log("Hiding sublists");
+//     }
+//     else if(!e.target.isClicked){
+//         e.target.parentNode.childNodes.forEach(function(child){
+//             if(child.className == "folder_list_item"){
+//                 child.style.display = "block";
+//             }
+//         });
+//         e.target.isClicked = true;
+//         console.log("Showing sublists");
 //     }
 // }
+
+// Displays the content of the dictionary
+function create_content(coursework){
+    // Create the header(s)
+    document.getElementById('content_header').innerHTML = Object.keys(coursework)[0];
+    document.getElementById('content').innerHTML = '';
+    // Create the content based on the keys in the coursework object
+    for (var key in coursework["phys_2111"]){
+        var new_div = document.createElement("div");
+        var key_header = document.createElement("h2");
+        key_header.innerHTML = key;
+        new_div.appendChild(key_header);
+        document.getElementById('content').appendChild(new_div);
+        current_coursework = coursework["phys_2111"];
+        for(var idx in current_coursework[key]){
+            var coursework_div = document.createElement("div");
+            var homework_title = document.createElement("p");
+            homework_title.innerHTML = current_coursework[key][idx]["name"];
+            coursework_div.appendChild(homework_title);
+            new_div.appendChild(coursework_div);
+        }
+        var new_item = document.createElement("input");
+        new_div.appendChild(new_item);
+    }
+}
 
 function add_course(){
     json_course = {
@@ -160,7 +165,7 @@ function send_post_request(data){
     .then(response => response.json())
     .then(data => {
         console.log(data);
-        display_courses(data);
+        display_lists(data);
     })
 }
 
