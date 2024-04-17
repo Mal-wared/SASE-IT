@@ -96,7 +96,8 @@ function display_course(e){
 // Displays the content of the dictionary
 function create_content(coursework){
     // Create the header(s)
-    document.getElementById('content_header').innerHTML = Object.keys(coursework)[0];
+    console.log(coursework[0]["coursename"])
+    document.getElementById('content_header').innerHTML = coursework[0]["coursename"];
     document.getElementById('content').innerHTML = '';
     // Create the content based on the keys in the coursework object
     for (var key in coursework["phys_2111"]){
