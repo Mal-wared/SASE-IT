@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<header>
+  <nav>
+      <img src="{{ url_for('static', filename='images/sasewhitelogo.png') }}" alt = "SASE logo" width = 25% height = 25% style="cursor:pointer" onclick="goHome()">
+      <a href="/dashboard">HOME</a>
+      <a href="#">ABOUT</a>
+      <a href="/login">LOGIN</a>
+      <a href="/signup">SIGN UP</a>
+  </nav>
+</header>
+  <head>
+    <title>The SASE Space</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/landingpage.css') }}">    <body>
+    <div class="top-info">
+      <img class="small-sase-logo" src="{{ url_for('static', filename='images/saselogo.png') }}" alt="Sase Logo" />
+      <p class="corner-title">The SASE Space</p>
+    </div>
+    <div class="top-divider"></div>
+    <h1 class="title">The SASE Space</h1>
+    <p class="catchphrase">One space for all your work</p>
+    <a href="/signup"><button class="sign-up">Sign Up</button></a>
+    <!-- <a href="login.html"><button class="login">Log In</button></a>    -->
+  </body>
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</html>

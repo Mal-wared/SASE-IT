@@ -1,4 +1,4 @@
-from flask import Flask,jsonify, request
+from flask import Flask, jsonify, request, render_template, redirect, url_for, flash
 from flask_cors import CORS
 from sqlalchemy import create_engine, MetaData, Table
 from sqlalchemy.orm import sessionmaker
@@ -6,17 +6,16 @@ from tables import Base, User, Course, Homework, Quiz
 import os
 import re
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='../static', template_folder='../templates')
+app.secret_key = "super secret key"
 CORS(app)
 
 directory = 'backend'
 db_filename = 'User.db'
 db_path = f"{os.path.join(os.getcwd(), directory, db_filename)}"
 
-# Create an engine object to connect to the SQLite database
+# Create an engine object to connect to the SQLite database and create a session
 engine = create_engine(f"sqlite:///{db_path}")
-
-# Create a session
 Session = sessionmaker(bind=engine)
 session = Session()
 
@@ -25,6 +24,8 @@ users = session.query(User).all()
 courses = session.query(Course).all()
 homeworks = session.query(Homework).all()
 quizzes = session.query(Quiz).all()
+
+user_id = ''
 
 course_list = {
     "phys_2111": {
@@ -42,42 +43,7 @@ course_list = {
     }
 }
 
-# Given the user-input username and password, check to see if it's inside of the database. If true, then return True,  otherwise return False
-def login(username, password):
-    for user in users:
-        if user.username == username and user.password == password:
-            return True
-    return False
 
-def signup(new_username, new_password, new_email):
-
-    #Check if username is taken
-    for user in users:
-        if user.username == new_username:
-            print("Username already exists")
-            return False
-    
-    #Check if password is valid (above 6 charcaters)
-    if (len(new_password) < 6):
-        print("Password invalid, need to be at least 6 characters")
-        return False
-
-    #Check if email is valid (Chatgpt)
-    pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
-    
-    # Use re.match to check if the email matches the pattern
-    if not re.match(pattern, new_email):
-        print("Please input valid email")
-        return False
-
-    #Open session with database
-    new_user = User(username = new_username, password=new_password, email = new_email)
-    #Add to database
-    session.add(new_user)
-    #Commit to database
-    session.commit()
-    #Close database
-    session.close()
 
 # Given the user's ID and the course name, add the course under the specified user's table
 def add_course(user_id, course_name):
@@ -198,15 +164,91 @@ def remove_quiz(course_id, course_name, quiz_name):
     #         course_list[course_name]["quizzes/tests"].remove(quiz)
     # print(course_list)
 
-#Server side
+################################################## Server side ##################################################
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == 'POST':
+        email = request.form['email']
+        username = request.form['username']
+        password = request.form['password']
+        confirm_password = request.form['confirm_password']
+
+        #Check if username is taken
+        for user in users:
+            if user.username == username:
+                flash('Username already exists')
+                return redirect(url_for('signup'))
+
+        #Check if password is valid (above 6 charcaters)
+        if (len(password) < 6):
+            flash('Password invalid, need to be at least 6 characters')
+            return redirect(url_for('signup'))
+
+        #Check if email is valid
+        pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
+
+        # Use re.match to check if the email matches the pattern
+        if not re.match(pattern, email):
+            flash('Please input valid email')
+            return redirect(url_for('signup'))
+
+        # Confirm passwords match
+        if password!= confirm_password:
+            flash('Passwords do not match')
+            return redirect(url_for('signup'))
+
+        user = User(email=email, username=username, password=password)
+        session.add(user)
+        session.commit()
+
+        flash('Account created successfully')
+        return redirect(url_for('login'))
+
+    return render_template('signup.html')
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        user = session.query(User).filter_by(username=username, password=password).first()
+        if user:
+            # Store user information in a session
+            user_id = user.id
+            return redirect(url_for('dashboard'))
+        else:
+            flash('Invalid credentials')
+            return redirect(url_for('login'))
+
+    return render_template('login.html')
+
 @app.route('/get_lists')
 def get_lists():
     return jsonify(course_list)
 
+
+@app.route('/')
+def home():
+    return render_template('landingpage.html')
+
+@app.route('/dashboard')
+def dashboard():
+    return render_template('index.html')
+
+
 @app.route('/add_course', methods=["POST"])
 def user_add_course():
-    pass
+    course_name = request.form['new_course']
+    result = add_course(user_id, course_name)
+    if result:
+        return "Success"
+    else:
+        return "Failure to add course"
+    
 
+    
 ## Parse through every user in the database and display their course, homework, and quiz
 ## Done with ChatGPT because I was too lazy to code it. Use only for reference and in understanding the database
 @app.route('/database')
@@ -240,6 +282,57 @@ def database():
             user_courses.append(course_info)
         user_course_info[user.username] = user_courses
     return jsonify(user_course_info)
+
+################################################## Server side ##################################################
+
+
+# NOTE: This function below is for manually checking a login (WONT BE ACCESSIBLE TO USERS) 
+def login(username, password):
+    for user in users:
+        if user.username == username and user.password == password:
+            return True
+    return False
+
+# NOTE: This function below is for manually signing up (WONT BE ACCESSIBLE TO USERS) 
+def signup(new_username, new_password, new_email):
+
+    #Check if username is taken
+    for user in users:
+        if user.username == new_username:
+            print("Username already exists")
+            return False
+    
+    #Check if password is valid (above 6 charcaters)
+    if (len(new_password) < 6):
+        print("Password invalid, need to be at least 6 characters")
+        return False
+
+    #Check if email is valid (Chatgpt)
+    pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
+    
+    # Use re.match to check if the email matches the pattern
+    if not re.match(pattern, new_email):
+        print("Please input valid email")
+        return False
+
+    #Open session with database
+    new_user = User(username = new_username, password=new_password, email = new_email)
+    #Add to database
+    session.add(new_user)
+    #Commit to database
+    session.commit()
+    #Close database
+    session.close()
+
+
+
+
+
+
+add_course(1, "Object-Oriented Programming")
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)

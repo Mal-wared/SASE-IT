@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+    <header>
+        <nav>
+            <img src="{{ url_for('static', filename='images/sasewhitelogo.png') }}" alt = "SASE logo" width = 25% height = 25% style="cursor:pointer" onclick="goHome()">
+            <a href="/dashboard">HOME</a>
+            <a href="#">ABOUT</a>
+            <a href="/login">LOGIN</a>
+            <a href="/signup">SIGN UP</a>
+        </nav>
+    </header>
+<head>
+    <link rel = "styleSheet" href="{{ url_for('static', filename='css/login.css') }}">
+    <link rel = "styleSheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content = "ie=edge">
+    <title>Sign Up Page</title>
+</head>
+<body>
+
+<div class="login-container">
+    <img src="{{ url_for('static', filename='images/saselogo.png') }}" alt = "SASE logo" width = 25% height = auto>
+    <h2>Sign Up</h2>
+    <form action="/signup" method="POST">
+        <input type="text" name="email" placeholder="Email" required>
+        <input type="text" name="username" placeholder="Username" required>
+        <input type="text" name="password" placeholder="Password" required>
+        <input type="text" name="confirm_password" placeholder="Confirm Password" required>
+        <button type="submit">Finish</button>
+    </form>
+</div>
+
+</body>
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</html>

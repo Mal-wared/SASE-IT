@@ -90,32 +90,30 @@ function display_sublists(e){
 }
 
 // Displays the content of the dictionary
-function create_content(coursework){
-    // Create the header(s)
-    document.getElementById('content_header').innerHTML = Object.keys(coursework)[0];
-    document.getElementById('content').innerHTML = '';
+// function create_content(coursework){
+//     // Create the header(s)
+//     document.getElementById('content_header').innerHTML = Object.keys(coursework)[0];
+//     document.getElementById('content').innerHTML = '';
     
-    // Create the content based on the keys in the coursework object
-    for (var key in coursework["phys_2111"]){
-        var new_div = document.createElement("div");
-        var key_header = document.createElement("h2");
-        key_header.innerHTML = key;
-        new_div.appendChild(key_header);
-        document.getElementById('content').appendChild(new_div);
-        current_coursework = coursework["phys_2111"];
-        for(var idx in current_coursework[key]){
-            var coursework_div = document.createElement("div");
-            var homework_title = document.createElement("p");
-            homework_title.innerHTML = current_coursework[key][idx]["name"];
-            coursework_div.appendChild(homework_title);
-            new_div.appendChild(coursework_div);
-        }
-    }
-}
+//     // Create the content based on the keys in the coursework object
+//     for (var key in coursework["phys_2111"]){
+//         var new_div = document.createElement("div");
+//         var key_header = document.createElement("h2");
+//         key_header.innerHTML = key;
+//         new_div.appendChild(key_header);
+//         document.getElementById('content').appendChild(new_div);
+//         current_coursework = coursework["phys_2111"];
+//         for(var idx in current_coursework[key]){
+//             var coursework_div = document.createElement("div");
+//             var homework_title = document.createElement("p");
+//             homework_title.innerHTML = current_coursework[key][idx]["name"];
+//             coursework_div.appendChild(homework_title);
+//             new_div.appendChild(coursework_div);
+//         }
+//     }
+// }
 
 function add_course(){
-    console.log("Adding course");
-    new_course = document.getElementById("new_course").value;
     json_course = {
         "action": "add_course",
         "course_name": new_course
