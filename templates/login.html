@@ -2,16 +2,16 @@
 <html lang="en">
 <header>
     <nav>
-        <img src="{{ url_for('static', filename='images/sasewhitelogo.png') }}" alt = "SASE logo" width = 25% height = 25% style="cursor:pointer" onclick="goHome()">
-        <a href="/home">HOME</a>
+        <img src="/static\images\sasewhitelogo.png" alt = "SASE logo" width = 25% height = 25% style="cursor:pointer" onclick="goHome()">
+        <a href="/templates\index.html">HOME</a>
         <a href="#">ABOUT</a>
-        <a href="/login">LOGIN</a>
-        <a href="/signup">SIGN UP</a>
+        <a href="/templates\login.html">LOGIN</a>
+        <a href="/templates\signup.html">SIGN UP</a>
     </nav>
 </header> 
 <head>
-    <link rel = "styleSheet" href="{{ url_for('static', filename='css/login.css') }}">
-    <link rel = "styleSheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel = "styleSheet" href="/static\css\login.css">
+    <link rel = "styleSheet" href="/static\css\style.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content = "ie=edge">
@@ -20,7 +20,7 @@
 <body>
 
 <div class="login-container">
-    <img src="{{ url_for('static', filename='images/saselogo.png') }}" alt = "SASE logo" width = 25% height = auto>
+    <img src="/static\images\saselogo.png" alt = "SASE logo" width = 25% height = auto>
     <h2>Login</h2>
     <form action="/login" method="POST">
         <input type="text" name="username" placeholder="Username" required>
@@ -31,5 +31,5 @@
 </div>>
 
 </body>
-<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+<script src="/static\js\script.js"></script>
 </html>

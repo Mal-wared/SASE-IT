@@ -165,5 +165,5 @@ function send_post_request(data){
 }
 
 function goHome(){
-    window.location.href = "landingpage.html";
+    window.location.href = "/templates/landingpage.html";
 }

@@ -5,17 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simple Website</title>
-    <link rel = "styleSheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel = "styleSheet" href="/static/css/style.css">
 </head>
 
 <body onload="call()">
     <header>
         <nav>
-            <img src="{{ url_for('static', filename='images/sasewhitelogo.png') }}" alt = "SASE logo" width = 25% height = 25% style="cursor:pointer" onclick="goHome()">
-            <a href="/dashboard">HOME</a>
+            <img src="/static\images\sasewhitelogo.png" alt = "SASE logo" width = 25% height = 25% style="cursor:pointer" onclick="goHome()">
+            <a href="/templates\index.html">HOME</a>
             <a href="#">ABOUT</a>
-            <a href="/login">LOGIN</a>
-            <a href="/signup">SIGN UP</a>
+            <a href="/templates\login.html">LOGIN</a>
+            <a href="/templates\signup.html">SIGN UP</a>
         </nav>
     </header>
     <!-- Side panel -->
@@ -45,5 +45,5 @@
 
     
 </body>
-<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+<script src="/static\js\script.js"></script>
 </html>
