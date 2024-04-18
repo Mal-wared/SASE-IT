@@ -13,9 +13,9 @@ document.getElementById('loginForm').addEventListener('submit', function(event){
     send_post_request(data, '/login').then(response =>
     {
     if(response == "Account logged in"){
-        console.log(response)
-        localStorage.setItem('current_user', username); // Save current_user to localStorage
         window.location.href = "/templates/index.html";
+        //console.log(response)
+        localStorage.setItem('current_user', username); // Save current_user to localStorage
     }
     else{
         alert(response)

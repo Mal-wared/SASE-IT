@@ -9,24 +9,21 @@ function getUserData(){
     data = {"current_user": current_user}
     send_post_request(data, '/get_user').then(response =>
         {
+        console.log(response)
         if(response['course_list']){
-            console.log(response)
-            coursework = response;
-            display_courses(coursework);
-            create_content(coursework);
+            coursework = response['course_list'];
+            display_lists(coursework);
+            create_initial_content(coursework);
         }
         else{
             console.log("No user found")
     }})
 }
 
-function login(){
-    
-}
-
 function display_lists(coursework){
     document.getElementById('lists').innerHTML = '';
-    var courses = coursework["1"]
+    console.log(coursework)
+    var courses = coursework
 
     // Display the data on client
     for (var i = 0; i < courses.length; i++){
@@ -53,12 +50,7 @@ function display_lists(coursework){
 }
 
 function display_course(e){
-    // If the course I clicked is already on, do nothing
-    // If the course I clicked isn't already on 
-    //      If it hasn't been created, hide current content and create it
-    //      If it has been created, hide current content and show it
-
-    var courseName = coursework["1"][e.target.id].coursename; // Get the name of the course
+    var courseName = coursework[e.target.id].coursename; // Get the name of the course
     next_course = courseName;
     console.log("Top Course: " + top_course);
     console.log("Next Course: " + next_course);
@@ -78,7 +70,7 @@ function display_course(e){
         } else {
              // Retrieve the course content from the Map
             top_course_content.style.display = "none"; // Show the course content
-            create_content(coursework["1"][e.target.id]); // Create the course content
+            create_content(coursework[e.target.id]); // Create the course content
             top_course = next_course;
         }
     }
@@ -128,7 +120,7 @@ function display_course(e){
 // Displays the content of the dictionary
 function create_initial_content(coursework){
     // Create the header(s)
-    var current_course = coursework["1"][1]
+    var current_course = coursework[0]
     document.getElementById('content_header').innerHTML = current_course.coursename;
     document.getElementById('content').innerHTML = '';
 
@@ -306,10 +298,6 @@ function send_post_request(data, url){
         body: JSON.stringify(data)
     })
     .then(response => response.json())
-    .then(data => {
-        console.log(data);
-        display_lists(data);
-    })
 }
 
 function goPage(url){

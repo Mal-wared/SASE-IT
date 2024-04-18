@@ -21,39 +21,14 @@ Session = sessionmaker(bind=engine)
 session = Session()
 
 
-
-# Query the data
 users = session.query(User).all()
-user = User(email="Danny2009le@gmail.com", username="Dannyle1237", password="123123")
-session.add(user)
-session.commit()
-for user in users:
-    if user.username == "Dannyle1237":
-        course = Course(coursename="phys 211", user_id=user.id)
-        session.add(course)
-        session.commit()
-
-        homework = Homework(title="14.1 hi", duedate="12-1-2002", course_id=course.id)
-        session.add(homework)
-        session.commit()
-        homework = Homework(title="14.2 hhii", duedate="12-1-2002", course_id=course.id)
-        session.add(homework)
-        session.commit()
-
-        course = Course(coursename="phys 311", user_id=user.id)
-        session.add(course)
-        session.commit()
-        homework = Homework(title="14.1 hi", duedate="12-1-2002", course_id=course.id)
-        session.add(homework)
-        session.commit()
-        homework = Homework(title="14.2 hhii", duedate="12-1-2002", course_id=course.id)
-        session.add(homework)
-        session.commit()
-
-
 courses = session.query(Course).all()
 homeworks = session.query(Homework).all()
 quizzes = session.query(Quiz).all()
+
+print('\n\nUSERS\n')
+for user in users:
+    print(f'id: {user.id} Username: {user.username} pass: {user.password}')
 
 user_id = ''
 
@@ -174,27 +149,27 @@ def signup():
         confirm_password = data.get('confirm_password')
         users = session.query(User).all()
 
-        # #Check if username or email is taken
-        # for user in users:
-        #     if user.username == username:
-        #         return jsonify('Username already exists')
-        #     if user.email == email:
-        #         return jsonify('Email already exists')
+        #Check if username or email is taken
+        for user in users:
+            if user.username == username:
+                return jsonify('Username already exists')
+            if user.email == email:
+                return jsonify('Email already exists')
 
-        # #Check if password is valid (above 6 charcaters)
-        # if (len(password) < 6):
-        #     return jsonify('Password invalid, need to be at least 6 characters')
+        #Check if password is valid (above 6 charcaters)
+        if (len(password) < 6):
+            return jsonify('Password invalid, need to be at least 6 characters')
 
-        # #Check if email is valid
-        # pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
+        #Check if email is valid
+        pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
 
-        # # Use re.match to check if the email matches the pattern
-        # if not re.match(pattern, email):
-        #     return jsonify('Please input valid email')
+        # Use re.match to check if the email matches the pattern
+        if not re.match(pattern, email):
+            return jsonify('Please input valid email')
 
-        # # Confirm passwords match
-        # if password!= confirm_password:
-        #     return jsonify('Passwords do not match')
+        # Confirm passwords match
+        if password!= confirm_password:
+            return jsonify('Passwords do not match')
 
         user = User(email=email, username=username, password=password)
         session.add(user)
@@ -207,6 +182,7 @@ def signup():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    print("Attemping login")
     if request.method == 'POST':
         data = request.json
         print(f'User data = {data}')
@@ -217,9 +193,11 @@ def login():
         if user:
             # Store user information in a session
             user_id = user.id
+            print("\nLog in successful\n")
             return jsonify("Account logged in")
         else:
-            return render_template('login.html')
+            print("\nLog in unsuccessful\n")
+            return jsonify("User does not exist")
 
 @app.route('/get_user', methods=['POST'])
 def get_user():
@@ -284,71 +262,38 @@ def user_add_course():
     
 ## Parse through every user in the database and display their course, homework, and quiz
 ## Done with ChatGPT because I was too lazy to code it. Use only for reference and in understanding the database
-# @app.route('/database')
-# def database():
-#     user_course_info = {}
-
-    # for user in users:
-    #     user_courses = []
-    #     courses = session.query(Course).filter_by(user_id=user.id).all()
-    #     for course in courses:
-    #         course_info = {
-    #             "coursename": course.coursename,
-    #             "course_id": course.id,
-    #             "homeworks": [],
-    #             "quizzes": []
-    #         }
-    #         homeworks = session.query(Homework).filter_by(course_id=course.id).all()
-    #         for homework in homeworks:
-    #             course_info["homeworks"].append({
-    #                 "title": homework.title,
-    #                 "duedate": homework.duedate
-    #             })
-    #         quizzes = session.query(Quiz).filter_by(course_id=course.id).all()
-    #         for quiz in quizzes:
-    #             course_info["quizzes"].append({
-    #                 "title": quiz.title,
-    #                 "date": quiz.date
-    #             })
-    #         course_info["homeworks"] = course_info["homeworks"]
-    #         course_info["quizzes"] = course_info["quizzes"]
-    #         user_courses.append(course_info)
-    #     user_course_info[user.username] = user_courses
-    # return jsonify(user_course_info)
-
-@app.route('/grab_user_info')
-def get_user_info():
-    user_id = 1
+@app.route('/database')
+def database():
     user_course_info = {}
 
-    user_courses = []
-    courses = session.query(Course).filter_by(user_id=user_id).all()
-    for course in courses:
-        course_info = {
-            "coursename": course.coursename,
-            "course_id": course.id,
-            "homeworks": [],
-            "quizzes": []
-        }
-        homeworks = session.query(Homework).filter_by(course_id=course.id).all()
-        for homework in homeworks:
-            course_info["homeworks"].append({
-                "title": homework.title,
-                "duedate": homework.duedate
-            })
-        quizzes = session.query(Quiz).filter_by(course_id=course.id).all()
-        for quiz in quizzes:
-            course_info["quizzes"].append({
-                "title": quiz.title,
-                "date": quiz.date
-            })
-        course_info["homeworks"] = course_info["homeworks"]
-        course_info["quizzes"] = course_info["quizzes"]
-        user_courses.append(course_info)
-    user_course_info[user_id] = user_courses
+    for user in users:
+        user_courses = []
+        courses = session.query(Course).filter_by(user_id=user.id).all()
+        for course in courses:
+            course_info = {
+                "coursename": course.coursename,
+                "course_id": course.id,
+                "homeworks": [],
+                "quizzes": []
+            }
+            homeworks = session.query(Homework).filter_by(course_id=course.id).all()
+            for homework in homeworks:
+                course_info["homeworks"].append({
+                    "title": homework.title,
+                    "duedate": homework.duedate
+                })
+            quizzes = session.query(Quiz).filter_by(course_id=course.id).all()
+            for quiz in quizzes:
+                course_info["quizzes"].append({
+                    "title": quiz.title,
+                    "date": quiz.date
+                })
+            course_info["homeworks"] = course_info["homeworks"]
+            course_info["quizzes"] = course_info["quizzes"]
+            user_courses.append(course_info)
+        user_course_info[user.username] = user_courses
     return jsonify(user_course_info)
 
-add_course(1, "Object-Oriented Programming")
 
 if __name__ == '__main__':
     app.run(debug=True)
