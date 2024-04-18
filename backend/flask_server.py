@@ -69,18 +69,14 @@ def add_course(user_id, course_name):
 
     return True
 
-# Given the user's ID and the course name, remove the course from the specified user's table
 def remove_course(user_id, course_name):
     course = session.query(Course).filter_by(user_id=user_id, coursename = course_name).first()
     if course:
-        # Delete the new course to the database and commit changes
         session.delete(course)
         session.commit()
     session.close()
 
-# Given the course ID and the homework name, add the homework under the specified course table
 def add_homework(course_id, course_name, hw_name, due_date):
-    # Check if the homework exists
     course = session.query(Course).filter_by(id=course_id).first()
     if not course:
         print("Course doesn't exist.")
@@ -92,120 +88,86 @@ def add_homework(course_id, course_name, hw_name, due_date):
         print("Homework already exists for this course.")
         return False
     
-    # Create a new Homework object
     new_homework = Homework(title = hw_name, duedate=due_date, course_id=course_id)
 
-    # Add and commit the new course to the database, and close the session
     session.add(new_homework)
     session.commit()
     session.close()
-
-    # Add course to course_list
-    course_list[course_name] = {"homework":[],"quizzes/tests":[]}
-
     return True
 
-    # course_list[course_name]["homework"].append({"name":hw, "date":date})
-
-# Given the course ID and the homework name, remove the homework under the specified course table
-def remove_homework(course_id, course_name, hw_name):
+def remove_homework(course_id, hw_name):
     homework = session.query(Homework).filter_by(course_id=course_id, title = hw_name).first()
     if homework:
-
-        # Delete the homework from the database and commit changes
         session.delete(homework)
         session.commit()
     session.close()
 
-    # for assignment in course_list[course_name]["homework"]:
-    #     if assignment["name"] == hw:
-    #         course_list[course_name]["homework"].remove(assignment)
-
-# Given the course ID and the quiz name, add the quiz under the specified course table
-def add_quiz(course_id, course_name, quiz_name, due_date):
-
-    # Check if the course exists
+def add_quiz(course_id, quiz_name, due_date):
     course = session.query(Course).filter_by(id=course_id).first()
     if not course:
         print("Course doesn't exist.")
         return False
     
-    # Check if homework already exists for that specific user
     quiz = session.query(Quiz).filter_by(course_id=course_id, title = quiz_name, duedate=due_date).first()
     if quiz:
         print("Quiz already exists for this course.")
         return False
     
-    # Create a new Quiz object
     new_quiz = Quiz(title = quiz_name, duedate=due_date, course_id=course_id)
 
-    # Add and commit the new quiz to the database, and close the session
     session.add(new_quiz)
     session.commit()
     session.close()
-
-    # Add course to course_list
-    #course_list[course_name]["quizzes/tests"].append({"Exam":quiz_name, "date":due_date})
-
     return True
 
-# Given the course ID and the quiz name, remove the quiz under the specified course table
-def remove_quiz(course_id, course_name, quiz_name):
+def remove_quiz(course_id, quiz_name):
     quiz = session.query(Quiz).filter_by(course_id=course_id, title = quiz_name).first()
     if quiz:
-
-        # Delete the quiz from the database and commit changes
         session.delete(quiz)
         session.commit()
-    session.close()
-
-    # for quiz in course_list[course_name]["quizzes/tests"]:
-    #     if quiz["Exam"] == quiz_name:
-    #         course_list[course_name]["quizzes/tests"].remove(quiz)
-    # print(course_list)
+        session.close()
+    else:
+        print("Quiz does not exist")
 
 ################################################## Server side ##################################################
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
-        email = request.form['email']
-        username = request.form['username']
-        password = request.form['password']
-        confirm_password = request.form['confirm_password']
+        data = request.json
+        
+        email = data.get('email')
+        username = data.get('username')
+        password = data.get('password')
+        confirm_password = data.get('confirm_password')
 
-        #Check if username is taken
-        for user in users:
-            if user.username == username:
-                flash('Username already exists')
-                return redirect(url_for('signup'))
+        # #Check if username or email is taken
+        # for user in users:
+        #     if user.username == username:
+        #         return jsonify('Username already exists')
+        #     if user.email == email:
+        #         return jsonify('Email already exists')
 
-        #Check if password is valid (above 6 charcaters)
-        if (len(password) < 6):
-            flash('Password invalid, need to be at least 6 characters')
-            return redirect(url_for('signup'))
+        # #Check if password is valid (above 6 charcaters)
+        # if (len(password) < 6):
+        #     return jsonify('Password invalid, need to be at least 6 characters')
 
-        #Check if email is valid
-        pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
+        # #Check if email is valid
+        # pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
 
-        # Use re.match to check if the email matches the pattern
-        if not re.match(pattern, email):
-            flash('Please input valid email')
-            return redirect(url_for('signup'))
+        # # Use re.match to check if the email matches the pattern
+        # if not re.match(pattern, email):
+        #     return jsonify('Please input valid email')
 
-        # Confirm passwords match
-        if password!= confirm_password:
-            flash('Passwords do not match')
-            return redirect(url_for('signup'))
+        # # Confirm passwords match
+        # if password!= confirm_password:
+        #     return jsonify('Passwords do not match')
 
         user = User(email=email, username=username, password=password)
         session.add(user)
         session.commit()
-
-        flash('Account created successfully')
-        return redirect(url_for('login'))
-
-    return render_template('signup.html')
-
+        for user in users:
+            print(user.username)
+        return jsonify("Account created successfully")
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -282,57 +244,6 @@ def database():
             user_courses.append(course_info)
         user_course_info[user.username] = user_courses
     return jsonify(user_course_info)
-
-################################################## Server side ##################################################
-
-
-# NOTE: This function below is for manually checking a login (WONT BE ACCESSIBLE TO USERS) 
-def login(username, password):
-    for user in users:
-        if user.username == username and user.password == password:
-            return True
-    return False
-
-# NOTE: This function below is for manually signing up (WONT BE ACCESSIBLE TO USERS) 
-def signup(new_username, new_password, new_email):
-
-    #Check if username is taken
-    for user in users:
-        if user.username == new_username:
-            print("Username already exists")
-            return False
-    
-    #Check if password is valid (above 6 charcaters)
-    if (len(new_password) < 6):
-        print("Password invalid, need to be at least 6 characters")
-        return False
-
-    #Check if email is valid (Chatgpt)
-    pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
-    
-    # Use re.match to check if the email matches the pattern
-    if not re.match(pattern, new_email):
-        print("Please input valid email")
-        return False
-
-    #Open session with database
-    new_user = User(username = new_username, password=new_password, email = new_email)
-    #Add to database
-    session.add(new_user)
-    #Commit to database
-    session.commit()
-    #Close database
-    session.close()
-
-
-
-
-
-
-add_course(1, "Object-Oriented Programming")
-
-
-
 
 if __name__ == '__main__':
     app.run(debug=True)
