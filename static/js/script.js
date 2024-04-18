@@ -59,18 +59,20 @@ function display_course(e){
     console.log("Top Course: " + top_course);
     console.log("Next Course: " + next_course);
 
+    var top_course_content = created_content.get(top_course);
+    var next_course_content = created_content.get(next_course);
+
+
     if (top_course != next_course){
         if (created_content.has(next_course)) {
-            var top_course_content = created_content.get(top_course); // Retrieve the course content from the Map
-            console.log(top_course)
-            var next_course_content = created_content.get(next_course); // Retrieve the course content from the Map
             top_course_content.style.display = "none"; // Show the course content
+            document.getElementById('content_header').innerHTML = next_course;
             next_course_content.style.display = "block"; // Show the course content
             console.log(created_content);
             top_course = next_course;
             
         } else {
-            var top_course_content = created_content.get(top_course); // Retrieve the course content from the Map
+             // Retrieve the course content from the Map
             top_course_content.style.display = "none"; // Show the course content
             create_content(coursework["1"][e.target.id]); // Create the course content
             top_course = next_course;
@@ -192,7 +194,6 @@ function create_initial_content(coursework){
 function create_content(current_course){
     // Create the header(s)
     document.getElementById('content_header').innerHTML = current_course.coursename;
-    document.getElementById('content').innerHTML = '';
 
     var course_div = document.createElement("div");
     course_div.id = "course_content";
