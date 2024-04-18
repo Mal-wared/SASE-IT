@@ -143,12 +143,15 @@ function create_initial_content(coursework){
 
         // Create the div for the homework
         var hw_div = document.createElement("div");
+        var hw_checkbox = document.createElement("input");
+        hw_checkbox.type = "checkbox";
         var hw_header = document.createElement("p");
         var hw_date = document.createElement("p");
 
         hw_header.innerHTML = current_homework.title;
         hw_date.innerHTML = current_homework.duedate;
-
+        
+        hw_div.appendChild(hw_checkbox);
         hw_div.appendChild(hw_header);
         hw_div.appendChild(hw_date);
 
@@ -170,12 +173,15 @@ function create_initial_content(coursework){
 
         // Create the div for the homework
         var exam_div = document.createElement("div");
+        var exam_checkbox = document.createElement("input");
+        exam_checkbox.type = "checkbox";
         var exam_header = document.createElement("p");
         var exam_date = document.createElement("p");
 
         exam_header.innerHTML = current_exam.title;
         exam_date.innerHTML = current_exam.date;
 
+        exam_div.appendChild(exam_checkbox);
         exam_div.appendChild(exam_header);
         exam_div.appendChild(exam_date);
 
