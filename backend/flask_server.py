@@ -26,7 +26,7 @@ courses = session.query(Course).all()
 homeworks = session.query(Homework).all()
 quizzes = session.query(Quiz).all()
 
-print('\n\nUSERS\n')
+print('\n\nUSERS\n2 ')
 for user in users:
     print(f'id: {user.id} Username: {user.username} pass: {user.password}')
 

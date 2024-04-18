@@ -16,6 +16,24 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: rgb(235, 225, 211);
+    border-bottom: 60px solid #292A41;
+}
+
+header {
+    background-color: #292A41;
+    padding: 10px;
+    position:fixed; 
+    top: 0; 
+    width:100%; 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
 }
 
@@ -68,7 +86,38 @@ nav p {
     text-decoration: none;
     margin-left: 95px;
     transition: background-color 0.3s ease;
+    margin-top: 20px;
+    padding: 8px 20px;
+    background:#76885B;
+    color: #fff;
+    border-radius: 40px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-decoration: none;
+    margin-left: 95px;
+    transition: background-color 0.3s ease;
 }
+
+.content .textBox .join-now-link:hover{
+    background-color: #2C7865;
+}
+
+
+
+.content{
+    position:relative;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 80px;
+    padding: 20px;
+}
+
+.content .textBox{
+    position: relative;
+    max-width: 600px;
+
 
 .content .textBox .join-now-link:hover{
     background-color: #2C7865;
@@ -130,4 +179,3 @@ nav p {
     margin-top: 20px;
     margin-right: 100px;
 }
-
