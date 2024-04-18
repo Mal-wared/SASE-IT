@@ -2,49 +2,24 @@ var current_user = localStorage.getItem('current_user');
 console.log(current_user)
 var coursework = {};
 
-function call(){
-    fetch('http://127.0.0.1:5000/get_lists')
-    .then(function (response) {
-        return response.json();
-    })
-    .then(function (data) {
-        coursework = data;
-        console.log(coursework);
-        display_courses(coursework);
-        create_content(coursework);
-    })
-    .catch(function (error) {
-        console.log('Error:', error);
-    });
+function getUserData(){
+    data = {"current_user": current_user}
+    send_post_request(data, '/get_user').then(response =>
+        {
+        if(response['course_list']){
+            console.log(response)
+            coursework = response;
+            display_courses(coursework);
+            create_content(coursework);
+        }
+        else{
+            console.log("No user found")
+    }})
 }
 
-//signup form action
-document.getElementById('signupForm').addEventListener('submit', function(event){
-    event.preventDefault();
+function login(){
     
-    //Grab the values in each input box
-    var email = this.elements['email'].value;
-    var username = this.elements['username'].value;
-    var password = this.elements['password'].value;
-    var confirm_password = this.elements['confirm_password'].value;
-    console.log(email);
-    data = {
-        "email": email,
-        "username": username,
-        "password": password,
-        "confirm_password": confirm_password
-    }
-    send_post_request(data, '/signup').then(response =>
-    {
-    if(response == "Account created successfully"){
-        console.log(response)
-        localStorage.setItem('current_user', username); // Save current_user to localStorage
-        window.location.href = "/templates/index.html";
-    }
-    else{
-        alert(response)
-    }})
-})
+}
 
 function display_courses(coursework){
     var i = 0;
@@ -112,29 +87,29 @@ function display_sublists(e){
     }
 }
 
-// Displays the content of the dictionary
-// function create_content(coursework){
-//     // Create the header(s)
-//     document.getElementById('content_header').innerHTML = Object.keys(coursework)[0];
-//     document.getElementById('content').innerHTML = '';
+//Displays the content of the dictionary
+function create_content(coursework){
+    // Create the header(s)
+    document.getElementById('content_header').innerHTML = Object.keys(coursework)[0];
+    document.getElementById('content').innerHTML = '';
     
-//     // Create the content based on the keys in the coursework object
-//     for (var key in coursework["phys_2111"]){
-//         var new_div = document.createElement("div");
-//         var key_header = document.createElement("h2");
-//         key_header.innerHTML = key;
-//         new_div.appendChild(key_header);
-//         document.getElementById('content').appendChild(new_div);
-//         current_coursework = coursework["phys_2111"];
-//         for(var idx in current_coursework[key]){
-//             var coursework_div = document.createElement("div");
-//             var homework_title = document.createElement("p");
-//             homework_title.innerHTML = current_coursework[key][idx]["name"];
-//             coursework_div.appendChild(homework_title);
-//             new_div.appendChild(coursework_div);
-//         }
-//     }
-// }
+    // Create the content based on the keys in the coursework object
+    for (var key in coursework["phys_2111"]){
+        var new_div = document.createElement("div");
+        var key_header = document.createElement("h2");
+        key_header.innerHTML = key;
+        new_div.appendChild(key_header);
+        document.getElementById('content').appendChild(new_div);
+        current_coursework = coursework["phys_2111"];
+        for(var idx in current_coursework[key]){
+            var coursework_div = document.createElement("div");
+            var homework_title = document.createElement("p");
+            homework_title.innerHTML = current_coursework[key][idx]["name"];
+            coursework_div.appendChild(homework_title);
+            new_div.appendChild(coursework_div);
+        }
+    }
+}
 
 function add_course(){
     json_course = {
@@ -155,7 +130,7 @@ function add_homework(){
         "hw_name": new_homework,
         "date": new_date
     }
-    send_post_request(json_homework)
+    send_post_request(json_homework,)
 }
 
 function add_exam(){
@@ -187,42 +162,60 @@ function send_post_request(data, url){
     });
 }
 
-function goHome(){
-    window.location.href = "/templates/landingpage.html";
+function goPage(url){
+    window.location.href = `/templates/${url}`;
 }
 
 function check_user(){
+    console.log("Checking user")
     var storedUser = localStorage.getItem('current_user'); // Retrieve current_user from localStorage
-    console.log(storedUser)
+    console.log(`Current user: ${storedUser}`)
     var nav = document.querySelector('nav');
     if(storedUser){
         console.log("Deleting")
-        var loginAnchor = nav.querySelector('a[href="/templates\\login.html"]');
-        var signupAnchor = nav.querySelector('a[href="/templates\\signup.html"]');
+        var loginAnchor = document.getElementById('LOGIN');
+        var signupAnchor = document.getElementById('SIGNUP');
+
         if (loginAnchor) {
-            nav.removeChild(loginAnchor);
+            loginAnchor.parentNode.removeChild(loginAnchor);
         }
+
         if (signupAnchor) {
-            nav.removeChild(signupAnchor);
+            signupAnchor.parentNode.removeChild(signupAnchor);
+        getUserData(current_user);
         }
+
+        var signOut = document.createElement('a');
+        signOut.textContent = 'Sign Out';
+        signOut.addEventListener('click', function() {
+            localStorage.setItem('current_user', ''); 
+            console.log('User signed out');
+            goPage("signup.html")
+        });
+        nav.appendChild(signOut);  
+
+        var user = document.createElement('p');
+        user.textContent = `Current user: ${current_user}`;
+        nav.appendChild(user);  
     }
     else{
-        console.log("adding")
-        // Create new login and signup anchors
-        var newLoginAnchor = document.createElement('a');
-        newLoginAnchor.setAttribute('href', '/templates\\login.html');
-        newLoginAnchor.textContent = 'LOGIN';
-
-        var newSignupAnchor = document.createElement('a');
-        newSignupAnchor.setAttribute('href', '/templates\\signup.html');
-        newSignupAnchor.textContent = 'SIGN UP';
-
-        // Append the new anchors to the navigation menu
-        nav.appendChild(newLoginAnchor);
-        nav.appendChild(newSignupAnchor);
+        var loginAnchor = document.getElementById('LOGIN');
+        var signupAnchor = document.getElementById('SIGNUP');
+        if(!loginAnchor){
+            var newLoginAnchor = document.createElement('a');
+            newLoginAnchor.setAttribute('href', '/templates\\login.html');
+            newLoginAnchor.textContent = 'LOGIN';
+            nav.appendChild(newLoginAnchor);
+        }
+        if(!signupAnchor){
+            var newSignupAnchor = document.createElement('a');
+            newSignupAnchor.setAttribute('href', '/templates\\signup.html');
+            newSignupAnchor.textContent = 'SIGN UP';
+            nav.appendChild(newSignupAnchor);
+        }
     }
 }
 
 document.addEventListener("DOMContentLoaded", function() {
     check_user();
-});
+}); 
