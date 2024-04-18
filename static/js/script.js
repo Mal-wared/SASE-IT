@@ -1,23 +1,27 @@
+var current_user = localStorage.getItem('current_user');
+console.log(current_user)
 var coursework = {};
 var created_content = new Map();
 var top_course = "";
 var next_course = "";
 
-function call(){
-    fetch('http://127.0.0.1:5000/grab_user_info')
-    .then(function (response) {
-        return response.json();
-    })
-    .then(function (data) {
-        coursework = data;
-        console.log(coursework);
-        display_lists(coursework);
-        create_initial_content(coursework);
+function getUserData(){
+    data = {"current_user": current_user}
+    send_post_request(data, '/get_user').then(response =>
+        {
+        if(response['course_list']){
+            console.log(response)
+            coursework = response;
+            display_courses(coursework);
+            create_content(coursework);
+        }
+        else{
+            console.log("No user found")
+    }})
+}
 
-    })
-    .catch(function (error) {
-        console.log('Error:', error);
-    });
+function login(){
+    
 }
 
 function display_lists(coursework){
@@ -276,7 +280,7 @@ function add_homework(){
         "hw_name": new_homework,
         "date": new_date
     }
-    send_post_request(json_homework)
+    send_post_request(json_homework,)
 }
 
 function add_exam(){
@@ -293,8 +297,8 @@ function add_exam(){
     send_post_request(json_exam)
 }
 
-function send_post_request(data){
-    fetch('http://127.0.0.1:5000/add', {
+function send_post_request(data, url){
+    return fetch(`http://127.0.0.1:5000/${url}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -308,6 +312,60 @@ function send_post_request(data){
     })
 }
 
-function goHome(){
-    window.location.href = "/templates/landingpage.html";
+function goPage(url){
+    window.location.href = `/templates/${url}`;
 }
+
+function check_user(){
+    console.log("Checking user")
+    var storedUser = localStorage.getItem('current_user'); // Retrieve current_user from localStorage
+    console.log(`Current user: ${storedUser}`)
+    var nav = document.querySelector('nav');
+    if(storedUser){
+        console.log("Deleting")
+        var loginAnchor = document.getElementById('LOGIN');
+        var signupAnchor = document.getElementById('SIGNUP');
+
+        if (loginAnchor) {
+            loginAnchor.parentNode.removeChild(loginAnchor);
+        }
+
+        if (signupAnchor) {
+            signupAnchor.parentNode.removeChild(signupAnchor);
+        getUserData(current_user);
+        }
+
+        var signOut = document.createElement('a');
+        signOut.textContent = 'Sign Out';
+        signOut.addEventListener('click', function() {
+            localStorage.setItem('current_user', ''); 
+            console.log('User signed out');
+            goPage("signup.html")
+        });
+        nav.appendChild(signOut);  
+
+        var user = document.createElement('p');
+        user.textContent = `Current user: ${current_user}`;
+        nav.appendChild(user);  
+    }
+    else{
+        var loginAnchor = document.getElementById('LOGIN');
+        var signupAnchor = document.getElementById('SIGNUP');
+        if(!loginAnchor){
+            var newLoginAnchor = document.createElement('a');
+            newLoginAnchor.setAttribute('href', '/templates\\login.html');
+            newLoginAnchor.textContent = 'LOGIN';
+            nav.appendChild(newLoginAnchor);
+        }
+        if(!signupAnchor){
+            var newSignupAnchor = document.createElement('a');
+            newSignupAnchor.setAttribute('href', '/templates\\signup.html');
+            newSignupAnchor.textContent = 'SIGN UP';
+            nav.appendChild(newSignupAnchor);
+        }
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    check_user();
+}); 
