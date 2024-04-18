@@ -16,6 +16,7 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
 body {
     font-family: sans-serif;
     margin: 0;
@@ -117,7 +118,7 @@ nav p {
 .content .textBox{
     position: relative;
     max-width: 600px;
-
+}
 
 .content .textBox .join-now-link:hover{
     background-color: #2C7865;
