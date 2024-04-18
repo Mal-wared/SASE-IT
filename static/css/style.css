@@ -15,7 +15,9 @@ nav {
     align-items: center;
 }
 
-nav a {
+nav a,
+nav p,
+nav button {
     text-decoration: none;
     color: white;
     padding-bottom: 2px;
@@ -35,15 +37,10 @@ header nav img{
 }
 
 nav a:hover {
-    background-color: rgb(132, 122, 122)
+    background-color: rgb(132, 122, 122);
+    cursor: pointer;
 }
 
-nav p {
-    margin: 0;
-}
-.quote {
-    margin-top: 1px;
-}
 main {
     padding: 20px;
 }

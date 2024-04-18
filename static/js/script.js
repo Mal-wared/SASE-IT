@@ -1,28 +1,29 @@
+var current_user = localStorage.getItem('current_user');
+console.log(current_user)
 var coursework = {};
 var created_content = new Map();
 var top_course = "";
 var next_course = "";
 
-function call(){
-    fetch('http://127.0.0.1:5000/grab_user_info')
-    .then(function (response) {
-        return response.json();
-    })
-    .then(function (data) {
-        coursework = data;
-        console.log(coursework);
-        display_lists(coursework);
-        create_initial_content(coursework);
-
-    })
-    .catch(function (error) {
-        console.log('Error:', error);
-    });
+function getUserData(){
+    data = {"current_user": current_user}
+    send_post_request(data, '/get_user').then(response =>
+        {
+        console.log(response)
+        if(response['course_list']){
+            coursework = response['course_list'];
+            display_lists(coursework);
+            create_initial_content(coursework);
+        }
+        else{
+            console.log("No user found")
+    }})
 }
 
 function display_lists(coursework){
     document.getElementById('lists').innerHTML = '';
-    var courses = coursework["1"]
+    console.log(coursework)
+    var courses = coursework
 
     // Display the data on client
     for (var i = 0; i < courses.length; i++){
@@ -49,12 +50,7 @@ function display_lists(coursework){
 }
 
 function display_course(e){
-    // If the course I clicked is already on, do nothing
-    // If the course I clicked isn't already on 
-    //      If it hasn't been created, hide current content and create it
-    //      If it has been created, hide current content and show it
-
-    var courseName = coursework["1"][e.target.id].coursename; // Get the name of the course
+    var courseName = coursework[e.target.id].coursename; // Get the name of the course
     next_course = courseName;
     console.log("Top Course: " + top_course);
     console.log("Next Course: " + next_course);
@@ -74,7 +70,7 @@ function display_course(e){
         } else {
              // Retrieve the course content from the Map
             top_course_content.style.display = "none"; // Show the course content
-            create_content(coursework["1"][e.target.id]); // Create the course content
+            create_content(coursework[e.target.id]); // Create the course content
             top_course = next_course;
         }
     }
@@ -124,7 +120,7 @@ function display_course(e){
 // Displays the content of the dictionary
 function create_initial_content(coursework){
     // Create the header(s)
-    var current_course = coursework["1"][1]
+    var current_course = coursework[0]
     document.getElementById('content_header').innerHTML = current_course.coursename;
     document.getElementById('content').innerHTML = '';
 
@@ -276,7 +272,7 @@ function add_homework(){
         "hw_name": new_homework,
         "date": new_date
     }
-    send_post_request(json_homework)
+    send_post_request(json_homework,)
 }
 
 function add_exam(){
@@ -293,8 +289,8 @@ function add_exam(){
     send_post_request(json_exam)
 }
 
-function send_post_request(data){
-    fetch('http://127.0.0.1:5000/add', {
+function send_post_request(data, url){
+    return fetch(`http://127.0.0.1:5000/${url}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -302,12 +298,62 @@ function send_post_request(data){
         body: JSON.stringify(data)
     })
     .then(response => response.json())
-    .then(data => {
-        console.log(data);
-        display_lists(data);
-    })
 }
 
-function goHome(){
-    window.location.href = "/templates/landingpage.html";
+function goPage(url){
+    window.location.href = `/templates/${url}`;
 }
+
+function check_user(){
+    console.log("Checking user")
+    var storedUser = localStorage.getItem('current_user'); // Retrieve current_user from localStorage
+    console.log(`Current user: ${storedUser}`)
+    var nav = document.querySelector('nav');
+    if(storedUser){
+        console.log("Deleting")
+        var loginAnchor = document.getElementById('LOGIN');
+        var signupAnchor = document.getElementById('SIGNUP');
+
+        if (loginAnchor) {
+            loginAnchor.parentNode.removeChild(loginAnchor);
+        }
+
+        if (signupAnchor) {
+            signupAnchor.parentNode.removeChild(signupAnchor);
+        getUserData(current_user);
+        }
+
+        var signOut = document.createElement('a');
+        signOut.textContent = 'Sign Out';
+        signOut.addEventListener('click', function() {
+            localStorage.setItem('current_user', ''); 
+            console.log('User signed out');
+            goPage("signup.html")
+        });
+        nav.appendChild(signOut);  
+
+        var user = document.createElement('p');
+        user.textContent = `Current user: ${current_user}`;
+        nav.appendChild(user);  
+    }
+    else{
+        var loginAnchor = document.getElementById('LOGIN');
+        var signupAnchor = document.getElementById('SIGNUP');
+        if(!loginAnchor){
+            var newLoginAnchor = document.createElement('a');
+            newLoginAnchor.setAttribute('href', '/templates\\login.html');
+            newLoginAnchor.textContent = 'LOGIN';
+            nav.appendChild(newLoginAnchor);
+        }
+        if(!signupAnchor){
+            var newSignupAnchor = document.createElement('a');
+            newSignupAnchor.setAttribute('href', '/templates\\signup.html');
+            newSignupAnchor.textContent = 'SIGN UP';
+            nav.appendChild(newSignupAnchor);
+        }
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    check_user();
+}); 
