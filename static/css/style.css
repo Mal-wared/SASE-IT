@@ -46,7 +46,7 @@ main {
 }
 
 .side-panel-left {
-    position: fixed;
+    position: absolute;
     top: 95 px;
     left: 0;
     height: 100%;
@@ -109,8 +109,8 @@ h1 {
 }
 .hw_date {
     /* color: blue; */
-    position: fixed;
-    right: 500px;
+    position: absolute;
+    right: 400px;
 }
 
 @media screen and (max-width: 768px) {
