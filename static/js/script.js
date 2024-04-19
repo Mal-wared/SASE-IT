@@ -4,6 +4,8 @@ var coursework = {};
 var created_content = new Map();
 var top_course = "";
 var next_course = "";
+var current_course_name = localStorage.getItem('current_course')
+console.log(`Current course:${current_course_name}`)
 
 function getUserData(){
     data = {"current_user": current_user}
@@ -51,6 +53,10 @@ function display_lists(coursework){
 
 function display_course(e){
     var courseName = coursework[e.target.id].coursename; // Get the name of the course
+    localStorage.setItem('current_course',courseName)
+    current_course_name = courseName;
+    console.log(`Current course set to :${current_course_name}`)
+
     next_course = courseName;
     console.log("Top Course: " + top_course);
     console.log("Next Course: " + next_course);
@@ -76,51 +82,20 @@ function display_course(e){
     }
 }
 
-// function display_sublists(e){
-//     if(e.target.isClicked == null){
-//         for (var key in coursework[e.target.id]){
-//             // Create a new list item element'
-//             var new_div = document.createElement('div');
-//             var new_butt = document.createElement('button');
-//             new_butt.innerHTML = "V";
-//             new_butt.id = key;
-//             new_butt.onclick = display_sublists;
-//             var new_li = document.createElement('li');
-//             new_li.innerHTML = key;
-
-//             new_div.className = "folder_list_item";
-//             new_div.appendChild(new_butt);
-//             new_div.appendChild(new_li);
-
-//             e.target.parentNode.appendChild(new_div);
-//         }
-//         e.target.isClicked = true;
-//         console.log("Creating sublists");
-//     }
-//     else if(e.target.isClicked){
-//         e.target.parentNode.childNodes.forEach(function(child){
-//             if(child.className == "folder_list_item"){
-//                 child.style.display = "none";
-//             }
-//         });
-//         e.target.isClicked = false;
-//         console.log("Hiding sublists");
-//     }
-//     else if(!e.target.isClicked){
-//         e.target.parentNode.childNodes.forEach(function(child){
-//             if(child.className == "folder_list_item"){
-//                 child.style.display = "block";
-//             }
-//         });
-//         e.target.isClicked = true;
-//         console.log("Showing sublists");
-//     }
-// }
-
 // Displays the content of the dictionary
 function create_initial_content(coursework){
+    if (current_course_name == ""){
+        var current_course = coursework[0]
+    }
+    else{
+        for(var i = 0; i < coursework.length; i++){
+            //console.log(coursework[i])
+            if (coursework[i].coursename == current_course_name){
+                var current_course = coursework[i]
+            }
+        }
+    }
     // Create the header(s)
-    var current_course = coursework[0]
     document.getElementById('content_header').innerHTML = current_course.coursename;
     document.getElementById('content').innerHTML = '';
 
@@ -260,39 +235,50 @@ function create_content(current_course){
 }
 
 function add_course(){
+    var new_course = document.getElementById("new_course").value;
     json_course = {
         "action": "add_course",
-        "course_name": new_course
+        "course_name": new_course,
+        "username": current_user
     }
-    send_post_request(json_course)
+    send_post_request(json_course, "add_course").then(response=>
+    {
+        console.log(response);
+    })
 }
 
 function add_homework(){
     console.log("Adding homework");
     new_homework = document.getElementById("new_homework").value;
     new_date = document.getElementById("new_date").value;
-
+    
     json_homework = {
         "action": "add_homework",
-        "course_name": "phys_2111",
+        "course_name": current_course_name,
         "hw_name": new_homework,
-        "date": new_date
+        "date": new_date,
+        "username": current_user
     }
-    send_post_request(json_homework,)
+    send_post_request(json_homework,"add_homework").then(response=>{    
+        console.log(response);
+    })
 }
 
-function add_exam(){
-    console.log("Adding Exam");
-    new_exam = document.getElementById("new_exam").value;
-    new_examdate= document.getElementById("new_examdate").value;
+function add_quiz(){
+    console.log("Adding Quiz");
+    new_quiz = document.getElementById("new_quiz").value;
+    new_quiz_date= document.getElementById("new_quiz_date").value;
 
-    json_exam ={
-        "action": "add_exam",
-        "course_name": "phys_2111",
-        "ex_name": new_exam,
-        "ex_date": new_examdate
+    json_quiz ={
+        "action": "add_quiz",
+        "course_name": current_course_name,
+        "quiz_name": new_quiz,
+        "quiz_date": new_quiz_date,
+        "username": current_user
     }
-    send_post_request(json_exam)
+    send_post_request(json_quiz,"add_quiz").then(response=>{    
+        console.log(response);
+    })
 }
 
 function send_post_request(data, url){

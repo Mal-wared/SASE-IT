@@ -54,27 +54,31 @@ course_list = [
 
 
 # Given the user's ID and the course name, add the course under the specified user's table
-def add_course(user_id, course_name):
+def add_course(username, course_name):
+    users = session.query(User).all()
+    courses = session.query(Course).all()
+    print(f'\n\nThe username is {username} and the coursename:{course_name}')
     # Check if the user exists
-    user = session.query(User).filter_by(id=user_id).first()
+    user = session.query(User).filter_by(username=username).first()
     if not user:
         print("User doesn't exist.")
         return False
-    
+
     # Check if course already exists for that specific user
-    course = session.query(Course).filter_by(user_id=user_id, coursename = course_name).first()
+    course = session.query(Course).filter_by(user_id=user.id, coursename=course_name).first()
     if course:
         print("Course already exists for this user.")
         return False
     
     # Create a new Course object
-    new_course = Course(coursename=course_name, user_id=user_id)
+    new_course = Course(coursename=course_name, user_id=user.id)
 
     # Add and commit the new course to the database, and close the session
     session.add(new_course)
     session.commit()
     session.close()
-
+    for course in courses:
+        print(f'id:{course.id} coursename:{course.coursename}')
     return True
 
 def remove_course(user_id, course_name):
@@ -84,19 +88,17 @@ def remove_course(user_id, course_name):
         session.commit()
     session.close()
 
-def add_homework(course_id, course_name, hw_name, due_date):
-    course = session.query(Course).filter_by(id=course_id).first()
+def add_homework(username, course_name, hw_name, due_date):
+    user = session.query(User).filter_by(username = username).first()
+    if not user:
+        print("user doesnt exist")
+        return False
+    user_id = user.id
+    course = session.query(Course).filter_by(user_id=user_id, coursename=course_name).first()
     if not course:
         print("Course doesn't exist.")
         return False
-    
-    # Check if homework already exists for that specific user
-    homework = session.query(Homework).filter_by(course_id=course_id, title = hw_name, duedate=due_date).first()
-    if homework:
-        print("Homework already exists for this course.")
-        return False
-    
-    new_homework = Homework(title = hw_name, duedate=due_date, course_id=course_id)
+    new_homework = Homework(title = hw_name, duedate=due_date, course_id=course.id)
 
     session.add(new_homework)
     session.commit()
@@ -110,18 +112,17 @@ def remove_homework(course_id, hw_name):
         session.commit()
     session.close()
 
-def add_quiz(course_id, quiz_name, due_date):
-    course = session.query(Course).filter_by(id=course_id).first()
+def add_quiz(username, course_name, quiz_name, quiz_date):
+    user = session.query(User).filter_by(username=username).first()
+    if not user:
+        print("user doesn't exist.")
+        return False
+    user_id=user.id
+    course = session.query(Course).filter_by(user_id=user_id, coursename=course_name).first()
     if not course:
         print("Course doesn't exist.")
         return False
-    
-    quiz = session.query(Quiz).filter_by(course_id=course_id, title = quiz_name, duedate=due_date).first()
-    if quiz:
-        print("Quiz already exists for this course.")
-        return False
-    
-    new_quiz = Quiz(title = quiz_name, duedate=due_date, course_id=course_id)
+    new_quiz = Quiz(title = quiz_name, date=quiz_date, course_id=course.id)
 
     session.add(new_quiz)
     session.commit()
@@ -251,15 +252,47 @@ def dashboard():
 
 @app.route('/add_course', methods=["POST"])
 def user_add_course():
-    course_name = request.form['new_course']
-    result = add_course(user_id, course_name)
+    data = request.json
+    print(f'\n\nData = {data}')
+    course_name = data.get('course_name')
+    username = data.get('username')
+    result = add_course(username, course_name)
     if result:
         return "Success"
     else:
         return "Failure to add course"
     
+@app.route('/add_homework',methods= ["POST"])
+def user_add_homework():
+    data = request.json
+    print(f'\n\nData = {data}')
+    course_name=data.get('course_name')
+    hw_name = data.get('hw_name')
+    date = data.get('date')
+    username = data.get('username')
 
+    result = add_homework(username, course_name,hw_name,date)
+
+    if result:
+        return jsonify("Success")
+    else:
+        return jsonify("Failure")
     
+@app.route('/add_quiz',methods= ["POST"])
+def user_add_quiz():
+    data = request.json
+    print(f'\n\nData = {data}')
+    course_name = data.get('course_name')
+    quiz_name = data.get('quiz_name')
+    quiz_date = data.get('quiz_date')
+    username = data.get('username')
+
+    result = add_quiz(username, course_name,quiz_name,quiz_date)
+
+    if result:
+        return jsonify("Success")
+    else:
+        return jsonify("Failure")
 ## Parse through every user in the database and display their course, homework, and quiz
 ## Done with ChatGPT because I was too lazy to code it. Use only for reference and in understanding the database
 @app.route('/database')

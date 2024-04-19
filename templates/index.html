@@ -24,7 +24,8 @@
         <p>This is a side panel example.</p>
         <ul id="lists">
         </ul>
-
+        <input id="new_course" type="text" placeholder="Course Name">
+        <button onclick="add_course()">add</button>
     </div>
 
     <!-- Content area -->
@@ -32,15 +33,13 @@
         <h1 id = "content_header"></h1>
         <ul id="content"></ul>
         <p>This is the main content area. You can put your main content here.</p>
-        <input id="new_course" type="text" placeholder="Course Name">
-        <button onclick="add_course()">add</button>
 
         <input id="new_homework" type="text" placeholder="Homework Name">
         <input id="new_date" type="text" placeholder="Due Date">
         <button onclick="add_homework()">add</button>
-        <input id="new_exam" type="text" placeholder="Exam Name">
-        <input id="new_examdate" type="text" placeholder="Due Date">
-        <button onclick="add_exam()">add</button>
+        <input id="new_quiz" type="text" placeholder="Exam Name">
+        <input id="new_quiz_date" type="text" placeholder="Due Date">
+        <button onclick="add_quiz()">add</button>
     </div>
 
     
