@@ -87,11 +87,35 @@ h1 {
 }
 
 .list_item {
-    display: block;
+    display: flex;
     align-items: center;
 }
 
 .folder_list_item {
     display: block;
     margin-left: 20px;
+}
+.listing {
+    display: flex;
+    border-top: 2px solid black;
+    /* width: 800px; */
+
+
+    /* border-bottom: 2px solid black; */
+    
+}
+.hw_header {
+    margin-left: 10px;
+}
+.hw_date {
+    /* color: blue; */
+    position: fixed;
+    right: 500px;
+}
+
+@media screen and (max-width: 768px) {
+    .hw_date {
+        right: 100px;
+    }
+    
 }

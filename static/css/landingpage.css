@@ -10,6 +10,7 @@ body {
 header {
     background-color: #292A41;
     padding: 10px;
+    z-index: 1; /* changed nav to be on top*/
     position:fixed; 
     top: 0; 
     width:100%; 
