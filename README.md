@@ -26,7 +26,7 @@ This application allows users to manage their tasks effectively. Users can creat
 1. Clone the repository:
 
    ```bash
-   git clone [https://github.com/your-username/task-management-app.git](https://github.com/Mal-wared/EZ2WEEKS.git)
+   git clone https://github.com/Mal-wared/EZ2WEEKS.git
    ```
 
 2. Navigate to the project directory:
