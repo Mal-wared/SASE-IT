@@ -100,10 +100,12 @@ function create_initial_content(coursework){
     document.getElementById('content').innerHTML = '';
 
     var course_div = document.createElement("div");
+    course_div.className = "course_div"
     course_div.id = "course_content";
     
 
     var hw_head_div = document.createElement("div");
+    hw_head_div.className = "hw_head_div";
     var hw_head = document.createElement("h2");
 
     hw_head.innerHTML = "Homework";
@@ -120,8 +122,15 @@ function create_initial_content(coursework){
         var hw_div = document.createElement("div");
         var hw_checkbox = document.createElement("input");
         hw_checkbox.type = "checkbox";
+        hw_checkbox.className = "hw_checkbox";
+        hw_div.appendChild(hw_checkbox);
+
         var hw_header = document.createElement("p");
+        hw_header.className = "hw_header";
+        
+
         var hw_date = document.createElement("p");
+        hw_date.className = "hw_date";
 
         hw_header.innerHTML = current_homework.title;
         hw_date.innerHTML = current_homework.duedate;
@@ -134,7 +143,10 @@ function create_initial_content(coursework){
     }
 
     var exam_head_div = document.createElement("div");
+    exam_head_div.className = "exam_head_div";
+
     var exam_head = document.createElement("h2");
+    exam_head.className = "exam_head";
 
     exam_head.innerHTML = "Exams/Quizzes";
     exam_head_div.appendChild(exam_head);
@@ -149,8 +161,11 @@ function create_initial_content(coursework){
         // Create the div for the homework
         var exam_div = document.createElement("div");
         var exam_checkbox = document.createElement("input");
+        exam_checkbox.className = "hw_checkbox";
         exam_checkbox.type = "checkbox";
+        exam_div.appendChild(exam_checkbox);
         var exam_header = document.createElement("p");
+        exam_header.className = "hw_header";
         var exam_date = document.createElement("p");
 
         exam_header.innerHTML = current_exam.title;
@@ -173,10 +188,12 @@ function create_content(current_course){
     document.getElementById('content_header').innerHTML = current_course.coursename;
 
     var course_div = document.createElement("div");
+    course_div.className = "course_div"
     course_div.id = "course_content";
     
 
     var hw_head_div = document.createElement("div");
+    hw_head_div.className = "hw_head_div";
     var hw_head = document.createElement("h2");
 
     hw_head.innerHTML = "Homework";
@@ -191,8 +208,14 @@ function create_content(current_course){
 
         // Create the div for the homework
         var hw_div = document.createElement("div");
+        var hw_checkbox = document.createElement("input");
+        hw_checkbox.className = "hw_checkbox";
+        hw_checkbox.type = "checkbox";
+        hw_div.appendChild(hw_checkbox);
         var hw_header = document.createElement("p");
+        hw_header.className = "hw_header";
         var hw_date = document.createElement("p");
+        hw_date.className = "hw_date";
 
         hw_header.innerHTML = current_homework.title;
         hw_date.innerHTML = current_homework.duedate;
@@ -204,7 +227,9 @@ function create_content(current_course){
     }
 
     var exam_head_div = document.createElement("div");
+    exam_head_div.className = "exam_head_div";
     var exam_head = document.createElement("h2");
+    exam_head.className = "exam_head";
 
     exam_head.innerHTML = "Exams/Quizzes";
     exam_head_div.appendChild(exam_head);
@@ -218,7 +243,12 @@ function create_content(current_course){
 
         // Create the div for the homework
         var exam_div = document.createElement("div");
+        var exam_checkbox = document.createElement("input");
+        exam_checkbox.className = "exam_checkbox"
+        exam_checkbox.type = "checkbox";
+        exam_div.appendChild(exam_checkbox);
         var exam_header = document.createElement("p");
+        exam_header.className = "hw_header";
         var exam_date = document.createElement("p");
 
         exam_header.innerHTML = current_exam.title;
