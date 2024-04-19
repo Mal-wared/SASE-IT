@@ -63,8 +63,5 @@ Contributions are welcome! Feel free to submit bug reports, feature requests, or
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the GPL-3.0 License. See the [LICENSE](LICENSE) file for details.
 
-## Contact
-
-For any inquiries or feedback, please contact [Your Name](mailto:your-email@example.com).
