@@ -1,6 +1,6 @@
-# Task Management Web Application
+# SASE-IT: Task Management Web Application
 
-This is a full stack task management web application built with Flask, HTML, CSS, and JavaScript.
+This is a full-stack task management web application built with Flask, Python, HTML, CSS, and JavaScript.
 
 ## Description
 
@@ -16,6 +16,7 @@ This application allows users to manage their tasks effectively. Users can creat
 ## Technologies Used
 
 - Flask: Python-based web framework for backend development.
+- Python: Programming language used for server-side scripting and backend logic.
 - HTML: Markup language for creating the structure of web pages.
 - CSS: Styling language for enhancing the appearance of web pages.
 - JavaScript: Programming language for adding interactivity to web pages.
@@ -25,13 +26,13 @@ This application allows users to manage their tasks effectively. Users can creat
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-username/task-management-app.git
+   git clone [https://github.com/your-username/task-management-app.git](https://github.com/Mal-wared/EZ2WEEKS.git)
    ```
 
 2. Navigate to the project directory:
 
    ```bash
-   cd task-management-app
+   cd EZ2WEEKS
    ```
 
 3. Install dependencies:
@@ -43,10 +44,10 @@ This application allows users to manage their tasks effectively. Users can creat
 4. Run the application:
 
    ```bash
-   python app.py
+   python flask_server.py
    ```
 
-5. Access the application in your web browser at `http://localhost:5000`.
+5. Access the application in your web browser at `http://localhost:5500`.
 
 ## Usage
 
