@@ -13,18 +13,22 @@ body {
     /* margin-bottom: 1px; */
     border-bottom: 2px solid black;
     width: 1300px;
+    margin-bottom: 30px;
 }
 .name {
     margin-top: 30px;
     margin-bottom: 4px;
 }
 .quote {
-    margin: 5px;
+    margin-top: 1px;
+    margin-left: 15px;
+    margin-right: 15px;
     font-style: italic;
     text-align: center;
 }
 .major {
     margin-top: 1px;
+    color: rgb(63, 63, 63)
 }
 .hd {
     margin-top: 0.3px;
@@ -52,11 +56,11 @@ header {
     display: flex;
     flex-direction: column;
     /* padding-left: 120px; */
-    margin-top: 50px; 
+    margin-top: 20px; 
     width: 33.33%;
     /* padding: 5px; */
     align-items: center;
-    margin-bottom: 40px;
+    /* margin-bottom: 40px; */
 
 
 }
@@ -66,7 +70,7 @@ nav {
     justify-content: space-between;
     align-items: center;
 }
-
+nav p,
 nav a {
     text-decoration: none;
     color: white;
@@ -97,7 +101,9 @@ nav p {
 main {
     padding: 20px;
 }
-
+.space {
+    margin-top: 100px;
+}
 .side-panel-left {
     position: fixed;
     top: 95 px;
