@@ -76,6 +76,28 @@ nav p {
 .content .textBox .join-now-link{
     font-size: 20px;
     padding-left: 95px;
+    margin-right: auto;
+}
+
+header nav img{
+    width: 15%; 
+    margin-right: 50%; 
+    margin-left: 2%;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+nav a:hover {
+    background-color: rgb(132, 122, 122)
+}
+
+nav p {
+    margin: 0;
+}
+
+.content .textBox .join-now-link{
+    font-size: 20px;
+    padding-left: 95px;
     display: inline-block;
     margin-top: 20px;
     padding: 8px 20px;
