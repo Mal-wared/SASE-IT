@@ -73,10 +73,13 @@ function display_course(e){
             next_course_content.style.display = "block"; // Show the course content
             console.log(created_content);
             top_course = next_course;
-            
-        } else {
+        } else if (created_content.has(top_course)) {
              // Retrieve the course content from the Map
             top_course_content.style.display = "none"; // Show the course content
+            create_content(coursework[e.target.id]); // Create the course content
+            top_course = next_course;
+        }
+        else{
             create_content(coursework[e.target.id]); // Create the course content
             top_course = next_course;
         }
@@ -135,6 +138,19 @@ function create_initial_content(coursework){
         var hw_date = document.createElement("p");
         hw_date.className = "hw_date";
 
+        var trash_icon = document.createElement("img");
+        trash_icon.className = "trash_icon";
+        trash_icon.src = "../static/images/trash.png";
+
+        var delete_butt = document.createElement('button');
+        delete_butt.appendChild(trash_icon);
+        delete_butt.onclick = delete_homework
+        delete_butt.className = "delete_butt";
+        delete_butt.id = i;
+        
+        delete_butt.onclick = display_course;
+
+
 
         hw_header.innerHTML = current_homework.title;
         hw_date.innerHTML = current_homework.duedate;
@@ -143,6 +159,7 @@ function create_initial_content(coursework){
         hw_div.appendChild(hw_checkbox);
         hw_div.appendChild(hw_header);
         hw_div.appendChild(hw_date);
+        hw_div.appendChild(delete_butt);
 
         hw_head_div.appendChild(hw_div);
 
@@ -177,12 +194,25 @@ function create_initial_content(coursework){
         var exam_date = document.createElement("p");
         exam_date.className = "hw_date";
 
+        var trash_icon = document.createElement("img");
+        trash_icon.className = "trash_icon";
+        trash_icon.src = "../static/images/trash.png";
+
+        var delete_butt = document.createElement('button');
+        delete_butt.appendChild(trash_icon);
+        delete_butt.onclick = delete_homework
+        delete_butt.className = "delete_butt";
+        delete_butt.id = i;
+        
+        delete_butt.onclick = display_course;
+
         exam_header.innerHTML = current_exam.title;
         exam_date.innerHTML = current_exam.date;
         exam_div.className = "listing"; 
         exam_div.appendChild(exam_checkbox);
         exam_div.appendChild(exam_header);
         exam_div.appendChild(exam_date);
+        exam_div.appendChild(delete_butt);
 
         
 
@@ -235,8 +265,21 @@ function create_content(current_course){
 
         hw_div.className = "listing"; 
 
+        var trash_icon = document.createElement("img");
+        trash_icon.className = "trash_icon";
+        trash_icon.src = "../static/images/trash.png";
+
+        var delete_butt = document.createElement('button');
+        delete_butt.appendChild(trash_icon);
+        delete_butt.onclick = delete_homework
+        delete_butt.className = "delete_butt";
+        delete_butt.id = i;
+        
+        delete_butt.onclick = display_course;
+
         hw_div.appendChild(hw_header);
         hw_div.appendChild(hw_date);
+        hw_div.appendChild(delete_butt);
 
         hw_head_div.appendChild(hw_div);
     }
@@ -271,9 +314,22 @@ function create_content(current_course){
         exam_header.innerHTML = current_exam.title;
         exam_date.innerHTML = current_exam.date;
         exam_div.className = "listing"; 
+
+        var trash_icon = document.createElement("img");
+        trash_icon.className = "trash_icon";
+        trash_icon.src = "../static/images/trash.png";
+
+        var delete_butt = document.createElement('button');
+        delete_butt.appendChild(trash_icon);
+        delete_butt.onclick = delete_homework
+        delete_butt.className = "delete_butt";
+        delete_butt.id = i;
+        
+        delete_butt.onclick = display_course;
         
         exam_div.appendChild(exam_header);
         exam_div.appendChild(exam_date);
+        exam_div.appendChild(delete_butt);
 
         exam_head_div.appendChild(exam_div);
     }
@@ -315,7 +371,21 @@ function add_homework(){
             console.log(response);
         })
     }
-    
+}
+
+function delete_homework(){
+    console.log("Deleting homework");
+    var homework_to_delete = document.getElementById("homework_to_delete").value;
+    var course_name = document.getElementById("course_name").value;
+    json_homework = {
+        "action": "delete_homework",
+        "course_name": course_name,
+        "hw_name": homework_to_delete,
+        "username": current_user
+    }
+    send_post_request(json_homework,"delete_homework").then(response=>{    
+        console.log(response);
+    })
 }
 
 function add_quiz(){
@@ -370,7 +440,7 @@ function check_user(){
             loginAnchor.parentNode.removeChild(loginAnchor);
         }
 
-        if (signupAnchor) {
+        if (signupAnchor) { 
             signupAnchor.parentNode.removeChild(signupAnchor);
         getUserData(current_user);
         }

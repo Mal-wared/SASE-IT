@@ -113,6 +113,15 @@ h1 {
     right: 400px;
 }
 
+.trash_icon {
+    max-width: 5%;
+}
+.delete_butt {
+    /* color: blue; */
+    position: absolute;
+    right: 500px;
+}
+
 @media screen and (max-width: 768px) {
     .hw_date {
         right: 100px;

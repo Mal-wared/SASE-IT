@@ -105,6 +105,23 @@ def add_homework(username, course_name, hw_name, due_date):
     session.close()
     return True
 
+def delete_homework(username, course_name, hw_name):
+    user = session.query(User).filter_by(username = username).first()
+    if not user:
+        print("user doesnt exist")
+        return False
+    user_id = user.id
+    course = session.query(Course).filter_by(user_id=user_id, coursename=course_name).first()
+    if not course:
+        print("Course doesn't exist.")
+        return False
+    homework = session.query(Homework).filter_by(course_id=course.id, title=hw_name).first()
+
+    session.delete(homework)
+    session.commit()
+    session.close()
+    return True
+
 def remove_homework(course_id, hw_name):
     homework = session.query(Homework).filter_by(course_id=course_id, title = hw_name).first()
     if homework:
