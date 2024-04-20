@@ -46,7 +46,7 @@ main {
 }
 
 .side-panel-left {
-    position: fixed;
+    position: absolute;
     top: 95 px;
     left: 0;
     height: 100%;
@@ -87,11 +87,44 @@ h1 {
 }
 
 .list_item {
-    display: block;
+    display: flex;
     align-items: center;
 }
 
 .folder_list_item {
     display: block;
     margin-left: 20px;
+}
+.listing {
+    display: flex;
+    border-top: 2px solid black;
+    /* width: 800px; */
+
+
+    /* border-bottom: 2px solid black; */
+    
+}
+.hw_header {
+    margin-left: 10px;
+}
+.hw_date {
+    /* color: blue; */
+    position: absolute;
+    right: 400px;
+}
+
+.trash_icon {
+    max-width: 5%;
+}
+.delete_butt {
+    /* color: blue; */
+    position: absolute;
+    right: 100px;
+}
+
+@media screen and (max-width: 768px) {
+    .hw_date {
+        right: 100px;
+    }
+    
 }

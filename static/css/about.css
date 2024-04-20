@@ -1,0 +1,178 @@
+* {
+    /* border-style: solid; */
+}
+
+body {
+    font-family: sans-serif;
+    margin: 0;
+    background-color: #D9D9D9;
+}
+.fe {
+    margin-top: 45px;
+    margin-left: 100px;
+    /* margin-bottom: 1px; */
+    border-bottom: 2px solid black;
+    width: 1300px;
+    margin-bottom: 30px;
+}
+.name {
+    margin-top: 30px;
+    margin-bottom: 4px;
+}
+.quote {
+    margin-top: 1px;
+    margin-left: 15px;
+    margin-right: 15px;
+    font-style: italic;
+    text-align: center;
+}
+.major {
+    margin-top: 1px;
+    color: rgb(63, 63, 63)
+}
+.hd {
+    margin-top: 0.3px;
+    /* padding-top: 0px; */
+    text-align: center;
+    font-size: 20px;
+}
+header {
+    background-color: #292A41;
+    padding: 10px;
+}
+.row {
+    /* background-color: #908d85; */
+    padding-top: 1px;
+    display: flex;
+    /* justify-content: center; */
+    flex-flow: row nowrap;
+    align-items: flex-start;
+    justify-content: center;
+    /* margin-left: 120px; */
+
+}
+
+.col {
+    display: flex;
+    flex-direction: column;
+    /* padding-left: 120px; */
+    margin-top: 20px; 
+    width: 33.33%;
+    /* padding: 5px; */
+    align-items: center;
+    /* margin-bottom: 40px; */
+
+
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+nav p,
+nav a {
+    text-decoration: none;
+    color: white;
+    padding-bottom: 2px;
+    padding: 8px;
+    font-size: 25px;
+    white-space: nowrap;
+    margin-left: 5px;
+    margin-right: auto;
+}
+
+header nav img{
+    width: 15%; 
+    margin-right: 50%; 
+    margin-left: 2%;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+nav a:hover {
+    background-color: rgb(132, 122, 122)
+}
+
+nav p {
+    margin: 0;
+}
+
+main {
+    padding: 20px;
+}
+.space {
+    margin-top: 100px;
+}
+.side-panel-left {
+    position: fixed;
+    top: 95 px;
+    left: 0;
+    height: 100%;
+    width: 200px; /* Adjust the width as needed */
+    background-color: #313A2E;
+    color: white;
+    padding: 10px;
+    z-index: 1; /* Ensure the side panel is above other content */
+}
+
+
+@media screen and (min-width: 700px) {
+    .side-panel-right {
+        display: block; /* Show the side panel */
+    }
+
+    /* Adjust the margin for the content area to make space for the side panel on the right side */
+    .content {
+        margin-right: 220px; /* Adjust according to the width of the side panel plus some extra space */
+    }
+}
+
+/* Style for the content area */
+.content {
+    margin-left: 240px; /* Adjust according to the width of the side panel */
+    padding: 0px;
+}
+
+/* Style for the heading */
+.tt {
+    padding-top: 73px;
+    color: #333;
+    text-align: center;
+    font-size: 48px;
+    margin-bottom: 0.3px
+}
+.desc {
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 375px;
+    margin-right: 375px;
+    /* margin-bottom: 40px; */
+    padding-top: 30px;
+
+}
+
+.side-panel-left ul {
+    list-style-type: none; /* Remove bullet points */
+    padding: 0;
+    margin: 0;
+}
+
+.list_item {
+    display: block;
+    align-items: center;
+}
+
+.folder_list_item {
+    display: block;
+    margin-left: 20px;
+}
+@media screen and (max-width: 768px) {
+    .desc {
+        margin-left: 100px;
+        margin-right: 100px;
+    }
+    
+}
