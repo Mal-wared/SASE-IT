@@ -136,7 +136,11 @@ def delete_quiz(username, course_name, quiz_id):
     if not course:
         print("Course doesn't exist.")
         return False
+    print(f'\n\nCourseid:{course.id} quiz_id:{quiz_id}')
     quiz = session.query(Quiz).filter_by(course_id=course.id, id=quiz_id).first()
+    if not quiz:
+        print("Quiz doesn't exist.")
+        return False
 
     session.delete(quiz)
     session.commit()

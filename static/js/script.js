@@ -200,7 +200,7 @@ function create_initial_content(coursework){
 
         var delete_butt = document.createElement('button');
         delete_butt.appendChild(trash_icon);
-        delete_butt.onclick = delete_homework
+        delete_butt.onclick = delete_quiz
         delete_butt.className = "delete_butt";
         delete_butt.id = current_course.quizzes[i].id;
         
@@ -319,7 +319,7 @@ function create_content(current_course){
 
         var delete_butt = document.createElement('button');
         delete_butt.appendChild(trash_icon);
-        delete_butt.onclick = delete_homework
+        delete_butt.onclick = delete_quiz
         delete_butt.className = "delete_butt";
         delete_butt.id = current_course.quizzes[i].id;
         
