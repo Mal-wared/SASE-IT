@@ -302,9 +302,9 @@ def user_add_course():
     username = data.get('username')
     result = add_course(username, course_name)
     if result:
-        return "Success"
+        return jsonify("Success")
     else:
-        return "Failure to add course"
+        return jsonify("Failure to add course")
     
 @app.route('/add_homework',methods= ["POST"])
 def user_add_homework():
@@ -406,4 +406,4 @@ def database():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=8080)

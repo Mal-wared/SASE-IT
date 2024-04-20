@@ -124,7 +124,6 @@ function create_initial_content(coursework){
         var current_homework = current_course.homeworks[i];
 
         // Create the div for the homework
-        
         var hw_div = document.createElement("div");
         var hw_checkbox = document.createElement("input");
         hw_checkbox.type = "checkbox";
@@ -406,6 +405,7 @@ function add_course(){
     send_post_request(json_course, "add_course").then(response=>
     {
         console.log(response);
+        window.location.reload();
     })
 }
 
@@ -427,6 +427,7 @@ function add_homework(){
         }
         send_post_request(json_homework,"add_homework").then(response=>{    
             console.log(response);
+            window.location.reload();
         })
     }
 }
@@ -443,6 +444,7 @@ function delete_homework(e){
     }
     send_post_request(json_homework,"delete_homework").then(response=>{    
         console.log(response);
+        window.location.reload();
     })
 }
 
@@ -457,6 +459,7 @@ function delete_quiz(e){
     }
     send_post_request(json_quiz,"delete_quiz").then(response=>{    
         console.log(response);
+        window.location.reload();
     })
 }
 
@@ -478,13 +481,14 @@ function add_quiz(){
         }
         send_post_request(json_quiz,"add_quiz").then(response=>{    
             console.log(response);
+            window.location.reload();
         })
     }
     
 }
 
 function send_post_request(data, url){
-    return fetch(`http://127.0.0.1:5000/${url}`, {
+    return fetch(`https://dannyle1237.pythonanywhere.com/${url}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

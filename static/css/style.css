@@ -104,6 +104,12 @@ h1 {
     /* width: 800px; */
     /* border-bottom: 2px solid black; */
 }
+
+.listing input{
+    width:20px;
+    height:20px;
+}
+
 .listing button{
     width:35px;
     height:35px;
