@@ -131,7 +131,6 @@ function create_initial_content(coursework){
         hw_checkbox.className = "hw_checkbox";
         hw_div.appendChild(hw_checkbox);
 
-
         var hw_header = document.createElement("p");
         hw_header.className = "hw_header";
         
@@ -148,9 +147,6 @@ function create_initial_content(coursework){
         delete_butt.onclick = delete_homework
         delete_butt.className = "delete_butt";
         delete_butt.id = current_course.homeworks[i].id;
-        
-
-
 
         hw_header.innerHTML = current_homework.title;
         hw_date.innerHTML = current_homework.duedate;
@@ -162,8 +158,24 @@ function create_initial_content(coursework){
         hw_div.appendChild(delete_butt);
 
         hw_head_div.appendChild(hw_div);
-
     }
+
+    var homeworkInput = document.createElement("input");
+    var dateInput = document.createElement("input");
+    var addButton = document.createElement("button");
+
+    homeworkInput.id = "new_homework";
+    homeworkInput.type = "text";
+    homeworkInput.placeholder = "Homework Name";
+    dateInput.id = "new_date";
+    dateInput.type = "text";
+    dateInput.placeholder = "Due Date";
+    addButton.textContent = "ADD";
+    addButton.onclick = add_homework;
+
+    hw_head_div.appendChild(homeworkInput);
+    hw_head_div.appendChild(dateInput);
+    hw_head_div.appendChild(addButton);
 
     var exam_head_div = document.createElement("div");
     exam_head_div.className = "exam_head_div";
@@ -213,12 +225,28 @@ function create_initial_content(coursework){
         exam_div.appendChild(exam_date);
         exam_div.appendChild(delete_butt);
 
-        
-
-
         exam_head_div.appendChild(exam_div);
 
     }
+    // Create input elements for quizzes
+    var quizInput = document.createElement("input");
+    var quizDateInput = document.createElement("input");
+    var addQuizButton = document.createElement("button");
+
+    // Set attributes for input elements
+    quizInput.id = "new_quiz";
+    quizInput.type = "text";
+    quizInput.placeholder = "Exam Name";
+    quizDateInput.id = "new_quiz_date";
+    quizDateInput.type = "text";
+    quizDateInput.placeholder = "Due Date";
+    addQuizButton.textContent = "ADD";
+    addQuizButton.onclick = add_quiz;
+
+    exam_head_div.appendChild(quizInput);
+    exam_head_div.appendChild(quizDateInput);
+    exam_head_div.appendChild(addQuizButton);
+
     document.getElementById('content').appendChild(course_div);
     created_content.set(current_course.coursename, course_div);
     top_course = current_course.coursename;
@@ -273,7 +301,6 @@ function create_content(current_course){
         delete_butt.onclick = delete_homework
         delete_butt.className = "delete_butt";
         delete_butt.id = current_course.homeworks[i].id;
-        
 
         hw_div.appendChild(hw_header);
         hw_div.appendChild(hw_date);
@@ -281,6 +308,23 @@ function create_content(current_course){
 
         hw_head_div.appendChild(hw_div);
     }
+
+    var homeworkInput = document.createElement("input");
+    var dateInput = document.createElement("input");
+    var addButton = document.createElement("button");
+
+    homeworkInput.id = "new_homework";
+    homeworkInput.type = "text";
+    homeworkInput.placeholder = "Homework Name";
+    dateInput.id = "new_date";
+    dateInput.type = "text";
+    dateInput.placeholder = "Due Date";
+    addButton.textContent = "ADD";
+    addButton.onclick = add_homework;
+
+    hw_head_div.appendChild(homeworkInput);
+    hw_head_div.appendChild(dateInput);
+    hw_head_div.appendChild(addButton);
 
     var exam_head_div = document.createElement("div");
     exam_head_div.className = "exam_head_div";
@@ -323,14 +367,30 @@ function create_content(current_course){
         delete_butt.className = "delete_butt";
         delete_butt.id = current_course.quizzes[i].id;
         
-        
-        
         exam_div.appendChild(exam_header);
         exam_div.appendChild(exam_date);
         exam_div.appendChild(delete_butt);
 
         exam_head_div.appendChild(exam_div);
     }
+    // Create input elements for quizzes
+    var quizInput = document.createElement("input");
+    var quizDateInput = document.createElement("input");
+    var addQuizButton = document.createElement("button");
+
+    // Set attributes for input elements
+    quizInput.id = "new_quiz";
+    quizInput.type = "text";
+    quizInput.placeholder = "Exam Name";
+    quizDateInput.id = "new_quiz_date";
+    quizDateInput.type = "text";
+    quizDateInput.placeholder = "Due Date";
+    addQuizButton.textContent = "ADD";
+    addQuizButton.onclick = add_quiz;
+
+    exam_head_div.appendChild(quizInput);
+    exam_head_div.appendChild(quizDateInput);
+    exam_head_div.appendChild(addQuizButton);
     document.getElementById('content').appendChild(course_div);
     created_content.set(current_course.coursename, course_div);
     //exam_head_div.style.display = "none";

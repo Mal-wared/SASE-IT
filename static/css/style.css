@@ -89,6 +89,7 @@ h1 {
 .list_item {
     display: flex;
     align-items: center;
+    margin:10px;
 }
 
 .folder_list_item {
@@ -98,28 +99,32 @@ h1 {
 .listing {
     display: flex;
     border-top: 2px solid black;
+    align-items:center;
+    position: relative;
     /* width: 800px; */
-
-
     /* border-bottom: 2px solid black; */
-    
 }
+.listing button{
+    width:35px;
+    height:35px;
+}
+
 .hw_header {
     margin-left: 10px;
 }
 .hw_date {
     /* color: blue; */
     position: absolute;
-    right: 400px;
+    right: 50px;
 }
 
 .trash_icon {
-    max-width: 5%;
+    max-width: 1rem;
 }
 .delete_butt {
     /* color: blue; */
     position: absolute;
-    right: 100px;
+    right: 0;
 }
 
 @media screen and (max-width: 768px) {
