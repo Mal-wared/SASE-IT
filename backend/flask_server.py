@@ -105,7 +105,7 @@ def add_homework(username, course_name, hw_name, due_date):
     session.close()
     return True
 
-def delete_homework(username, course_name, hw_name):
+def delete_homework(username, course_name, hw_id):
     user = session.query(User).filter_by(username = username).first()
     if not user:
         print("user doesnt exist")
@@ -115,9 +115,30 @@ def delete_homework(username, course_name, hw_name):
     if not course:
         print("Course doesn't exist.")
         return False
-    homework = session.query(Homework).filter_by(course_id=course.id, title=hw_name).first()
-
+    print(f'\n\nCourseid:{course.id} hw_id:{hw_id}')
+    homework = session.query(Homework).filter_by(course_id=course.id, id=hw_id).first()
+    if not homework:
+        print("Homework doesn't exist.")
+        return False
+    
     session.delete(homework)
+    session.commit()
+    session.close()
+    return True
+
+def delete_quiz(username, course_name, quiz_id):
+    user = session.query(User).filter_by(username = username).first()
+    if not user:
+        print("user doesnt exist")
+        return False
+    user_id = user.id
+    course = session.query(Course).filter_by(user_id=user_id, coursename=course_name).first()
+    if not course:
+        print("Course doesn't exist.")
+        return False
+    quiz = session.query(Quiz).filter_by(course_id=course.id, id=quiz_id).first()
+
+    session.delete(quiz)
     session.commit()
     session.close()
     return True
@@ -240,13 +261,15 @@ def get_user():
                         if homework.course_id == course.id:
                             user_hw.append({
                                 "title": homework.title,
-                                "duedate": homework.duedate
+                                "duedate": homework.duedate,
+                                "id": homework.id
                             })
                     for quiz in quizzes:
                         if quiz.course_id == course.id:
                             user_quizzes.append({
                                 "title": quiz.title,
-                                "date": quiz.date
+                                "date": quiz.date,
+                                "id": quiz.id
                             })    
                     user_data.append({
                         "coursename": course.coursename,
@@ -295,6 +318,21 @@ def user_add_homework():
     else:
         return jsonify("Failure")
     
+@app.route('/delete_homework',methods= ["POST"])
+def user_delete_homework():
+    data = request.json
+    print(f'\n\nData = {data}')
+    course_name=data.get('course_name')
+    hw_id = data.get('hw_id')
+    username = data.get('username')
+
+    result = delete_homework(username, course_name, hw_id)
+
+    if result:
+        return jsonify("Success")
+    else:
+        return jsonify("Failure")
+    
 @app.route('/add_quiz',methods= ["POST"])
 def user_add_quiz():
     data = request.json
@@ -310,6 +348,22 @@ def user_add_quiz():
         return jsonify("Success")
     else:
         return jsonify("Failure")
+    
+@app.route('/delete_quiz',methods= ["POST"])
+def user_delete_quiz():
+    data = request.json
+    print(f'\n\nData = {data}')
+    course_name=data.get('course_name')
+    quiz_id = data.get('quiz_id')
+    username = data.get('username')
+
+    result = delete_quiz(username, course_name, quiz_id)
+
+    if result:
+        return jsonify("Success")
+    else:
+        return jsonify("Failure")
+
 ## Parse through every user in the database and display their course, homework, and quiz
 ## Done with ChatGPT because I was too lazy to code it. Use only for reference and in understanding the database
 @app.route('/database')
@@ -330,13 +384,15 @@ def database():
             for homework in homeworks:
                 course_info["homeworks"].append({
                     "title": homework.title,
-                    "duedate": homework.duedate
+                    "duedate": homework.duedate,
+                    "id": homework.id
                 })
             quizzes = session.query(Quiz).filter_by(course_id=course.id).all()
             for quiz in quizzes:
                 course_info["quizzes"].append({
                     "title": quiz.title,
-                    "date": quiz.date
+                    "date": quiz.date,
+                    "id": quiz.id
                 })
             course_info["homeworks"] = course_info["homeworks"]
             course_info["quizzes"] = course_info["quizzes"]

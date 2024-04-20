@@ -119,7 +119,7 @@ h1 {
 .delete_butt {
     /* color: blue; */
     position: absolute;
-    right: 500px;
+    right: 100px;
 }
 
 @media screen and (max-width: 768px) {

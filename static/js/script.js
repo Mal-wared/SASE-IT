@@ -16,6 +16,7 @@ function getUserData(){
             coursework = response['course_list'];
             display_lists(coursework);
             create_initial_content(coursework);
+            console.log(coursework);
         }
         else{
             console.log("No user found")
@@ -146,9 +147,8 @@ function create_initial_content(coursework){
         delete_butt.appendChild(trash_icon);
         delete_butt.onclick = delete_homework
         delete_butt.className = "delete_butt";
-        delete_butt.id = i;
+        delete_butt.id = current_course.homeworks[i].id;
         
-        delete_butt.onclick = display_course;
 
 
 
@@ -202,9 +202,8 @@ function create_initial_content(coursework){
         delete_butt.appendChild(trash_icon);
         delete_butt.onclick = delete_homework
         delete_butt.className = "delete_butt";
-        delete_butt.id = i;
+        delete_butt.id = current_course.quizzes[i].id;
         
-        delete_butt.onclick = display_course;
 
         exam_header.innerHTML = current_exam.title;
         exam_date.innerHTML = current_exam.date;
@@ -273,9 +272,8 @@ function create_content(current_course){
         delete_butt.appendChild(trash_icon);
         delete_butt.onclick = delete_homework
         delete_butt.className = "delete_butt";
-        delete_butt.id = i;
+        delete_butt.id = current_course.homeworks[i].id;
         
-        delete_butt.onclick = display_course;
 
         hw_div.appendChild(hw_header);
         hw_div.appendChild(hw_date);
@@ -323,9 +321,9 @@ function create_content(current_course){
         delete_butt.appendChild(trash_icon);
         delete_butt.onclick = delete_homework
         delete_butt.className = "delete_butt";
-        delete_butt.id = i;
+        delete_butt.id = current_course.quizzes[i].id;
         
-        delete_butt.onclick = display_course;
+        
         
         exam_div.appendChild(exam_header);
         exam_div.appendChild(exam_date);
@@ -373,17 +371,31 @@ function add_homework(){
     }
 }
 
-function delete_homework(){
+function delete_homework(e){
     console.log("Deleting homework");
-    var homework_to_delete = document.getElementById("homework_to_delete").value;
-    var course_name = document.getElementById("course_name").value;
+    var homework_id_to_delete = e.target.id;
+    console.log("hw to delete: " + homework_id_to_delete);
     json_homework = {
         "action": "delete_homework",
-        "course_name": course_name,
-        "hw_name": homework_to_delete,
+        "course_name": current_course_name,
+        "hw_id": homework_id_to_delete,
         "username": current_user
     }
     send_post_request(json_homework,"delete_homework").then(response=>{    
+        console.log(response);
+    })
+}
+
+function delete_quiz(e){
+    console.log("Deleting quiz");
+    var quiz_id_to_delete = e.target.id;
+    json_quiz = {
+        "action": "delete_quiz",
+        "course_name": current_course_name,
+        "quiz_id": quiz_id_to_delete,
+        "username": current_user
+    }
+    send_post_request(json_quiz,"delete_quiz").then(response=>{    
         console.log(response);
     })
 }
