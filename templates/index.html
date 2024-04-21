@@ -4,43 +4,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple Website</title>
+    <title>SASE IT</title>
     <link rel = "styleSheet" href="/static/css/style.css">
 </head>
 
 <body>
     <header>
         <nav>
-            <img src="/static\images\sasewhitelogo.png" alt = "SASE logo" width = 25% height = 25% style="cursor:pointer" onclick="goHome()">
+            <img src="/static\images\sasewhitelogo.png" alt = "SASE logo" width = 25% height = 25% style="cursor:pointer" onclick="goPage('landingpage.html')">
             <a href="/templates\index.html">HOME</a>
-            <a href="#">ABOUT</a>
-            <a href="/templates\login.html">LOGIN</a>
-            <a href="/templates\signup.html">SIGN UP</a>
+            <a href="/templates\about.html">ABOUT</a>
+            <a id = "LOGIN" href="/templates\login.html">LOGIN</a>
+            <a id = "SIGNUP" href="/templates\signup.html">SIGN UP</a>
         </nav>
     </header>
     <!-- Side panel -->
     <div class="side-panel-left">
-        <h2>Side Panel</h2>
-        <p>This is a side panel example.</p>
+        <h2>Courses</h2>
+        <!-- <p>Add:</p> -->
         <ul id="lists">
         </ul>
-
+        <input id="new_course" type="text" placeholder="Course Name">
+        <button onclick="add_course()">ADD</button>
     </div>
 
     <!-- Content area -->
     <div class="content">
         <h1 id = "content_header"></h1>
         <ul id="content"></ul>
-        <p>This is the main content area. You can put your main content here.</p>
-        <input id="new_course" type="text" placeholder="Course Name">
-        <button onclick="add_course()">add</button>
-
-        <input id="new_homework" type="text" placeholder="Homework Name">
-        <input id="new_date" type="text" placeholder="Due Date">
-        <button onclick="add_homework()">add</button>
-        <input id="new_exam" type="text" placeholder="Exam Name">
-        <input id="new_examdate" type="text" placeholder="Due Date">
-        <button onclick="add_exam()">add</button>
     </div>
 
 </body>

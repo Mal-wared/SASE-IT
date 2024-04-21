@@ -15,7 +15,9 @@ nav {
     align-items: center;
 }
 
-nav a {
+nav a,
+nav p,
+nav button {
     text-decoration: none;
     color: white;
     padding-bottom: 2px;
@@ -35,11 +37,8 @@ header nav img{
 }
 
 nav a:hover {
-    background-color: rgb(132, 122, 122)
-}
-
-nav p {
-    margin: 0;
+    background-color: rgb(132, 122, 122);
+    cursor: pointer;
 }
 
 main {
@@ -47,7 +46,7 @@ main {
 }
 
 .side-panel-left {
-    position: fixed;
+    position: absolute;
     top: 95 px;
     left: 0;
     height: 100%;
@@ -88,11 +87,55 @@ h1 {
 }
 
 .list_item {
-    display: block;
+    display: flex;
     align-items: center;
+    margin:10px;
 }
 
 .folder_list_item {
     display: block;
     margin-left: 20px;
+}
+.listing {
+    display: flex;
+    border-top: 2px solid black;
+    align-items:center;
+    position: relative;
+    /* width: 800px; */
+    /* border-bottom: 2px solid black; */
+}
+
+.listing input{
+    width:20px;
+    height:20px;
+}
+
+.listing button{
+    width:35px;
+    height:35px;
+}
+
+.hw_header {
+    margin-left: 10px;
+}
+.hw_date {
+    /* color: blue; */
+    position: absolute;
+    right: 50px;
+}
+
+.trash_icon {
+    max-width: 1rem;
+}
+.delete_butt {
+    /* color: blue; */
+    position: absolute;
+    right: 0;
+}
+
+@media screen and (max-width: 768px) {
+    .hw_date {
+        right: 100px;
+    }
+    
 }
