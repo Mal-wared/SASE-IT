@@ -6,6 +6,7 @@ var top_course = "";
 var next_course = "";
 var current_course_name = localStorage.getItem('current_course')
 console.log(`Current course:${current_course_name}`)
+var base_url = "http://127.0.0.1:8080/"
 
 function getUserData(){
     data = {"current_user": current_user}
@@ -411,8 +412,25 @@ function add_course(){
 
 function add_homework(){
     console.log("Adding homework");
-    new_homework = document.getElementById("new_homework").value;
-    new_date = document.getElementById("new_date").value;
+    var new_homework = "";
+    var new_date = "";
+
+    var elements = document.querySelectorAll("#new_homework");
+
+    elements.forEach(function(element) {
+        if (window.getComputedStyle(element).display !== "none") {
+            new_homework = element.value;
+        }
+    });
+
+    var elements_date = document.querySelectorAll("#new_date");
+
+    elements_date.forEach(function(element) {
+        if (window.getComputedStyle(element).display !== "none") {
+            new_date = element.value;
+        }
+    });
+
     if (new_date === "" || new_homework === "") {
         console.log("empty hw or date")
         return;
@@ -465,8 +483,27 @@ function delete_quiz(e){
 
 function add_quiz(){
     console.log("Adding Quiz");
-    new_quiz = document.getElementById("new_quiz").value;
-    new_quiz_date= document.getElementById("new_quiz_date").value;
+    
+    var new_quiz = "";
+    var new_quiz_date = "";
+    
+    var elements = document.querySelectorAll("#new_quiz");
+
+    elements.forEach(function(element) {
+        if (window.getComputedStyle(element).display !== "none") {
+            new_quiz = element.value;
+        }
+    });
+
+    var elements_date = document.querySelectorAll("#new_quiz_date");
+
+    elements_date.forEach(function(element) {
+        if (window.getComputedStyle(element).display !== "none") {
+            new_quiz_date = element.value;
+        }
+    });
+    
+
     if (new_quiz_date === "" || new_quiz === "") {
         console.log("empty quiz/exam or date")
         return;
@@ -488,7 +525,7 @@ function add_quiz(){
 }
 
 function send_post_request(data, url){
-    return fetch(`https://dannyle1237.pythonanywhere.com/${url}`, {
+    return fetch(`${base_url}${url}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
