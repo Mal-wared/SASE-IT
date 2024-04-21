@@ -245,5 +245,108 @@ def database():
         user_course_info[user.username] = user_courses
     return jsonify(user_course_info)
 
+@app.route('/grab_user_info')
+def get_user_info():
+    user_id = 1
+    user_course_info = {}
+
+    user_courses = []
+    courses = session.query(Course).filter_by(user_id=user_id).all()
+    for course in courses:
+        course_info = {
+            "coursename": course.coursename,
+            "course_id": course.id,
+            "homeworks": [],
+            "quizzes": []
+        }
+        homeworks = session.query(Homework).filter_by(course_id=course.id).all()
+        for homework in homeworks:
+            course_info["homeworks"].append({
+                "title": homework.title,
+                "duedate": homework.duedate
+            })
+        quizzes = session.query(Quiz).filter_by(course_id=course.id).all()
+        for quiz in quizzes:
+            course_info["quizzes"].append({
+                "title": quiz.title,
+                "date": quiz.date
+            })
+        course_info["homeworks"] = course_info["homeworks"]
+        course_info["quizzes"] = course_info["quizzes"]
+        user_courses.append(course_info)
+    user_course_info[user_id] = user_courses
+    return jsonify(user_course_info)
+
+
+course_list_needed = [
+    {  
+        "coursename": "Physics 2111", 
+        "course_id": "1", 
+        "homeworks": [{"title": "14.1 linear systems", "duedate": "2-14-24"}, 
+                      {"title": "14.2 linear combinations", "duedate": "2-18-24"}], 
+        "quizzes": [{"title": "Exam 1", "date": "2-20-24"}, 
+                    {"title": "Exam 2", "date": "2-25-24"}]
+    },
+    {
+        "coursename": "Physics 2222",
+        "course_id": "2",
+        "homeworks": [{"title": "17.2 line integrals", "duedate": "2-16-24"},
+                      {"title": "17.3 conservative vector fields", "duedate": "2-23-24"}],
+        "quizzes": [{"title": "Exam 1", "date": "3-30-24"},
+                    {"title": "Exam 2", "date": "4-01-24"}]
+    }
+]
+
+################################################## Server side ##################################################
+
+
+# NOTE: This function below is for manually checking a login (WONT BE ACCESSIBLE TO USERS) 
+def login(username, password):
+    for user in users:
+        if user.username == username and user.password == password:
+            return True
+    return False
+
+# NOTE: This function below is for manually signing up (WONT BE ACCESSIBLE TO USERS) 
+def signup(new_username, new_password, new_email):
+
+    #Check if username is taken
+    for user in users:
+        if user.username == new_username:
+            print("Username already exists")
+            return False
+    
+    #Check if password is valid (above 6 charcaters)
+    if (len(new_password) < 6):
+        print("Password invalid, need to be at least 6 characters")
+        return False
+
+    #Check if email is valid (Chatgpt)
+    pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
+    
+    # Use re.match to check if the email matches the pattern
+    if not re.match(pattern, new_email):
+        print("Please input valid email")
+        return False
+
+    #Open session with database
+    new_user = User(username = new_username, password=new_password, email = new_email)
+    #Add to database
+    session.add(new_user)
+    #Commit to database
+    session.commit()
+    #Close database
+    session.close()
+
+
+
+
+
+
+add_course(1, "Object-Oriented Programming")
+
+
+
+
 if __name__ == '__main__':
     app.run(debug=True)
