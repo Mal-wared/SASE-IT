@@ -2,11 +2,11 @@
 <html lang="en">
     <header>
         <nav>
-            <img src="/static\images\sasewhitelogo.png" alt = "SASE logo" width = 25% height = 25% style="cursor:pointer" onclick="goHome()">
+            <img src="/static\images\sasewhitelogo.png" alt = "SASE logo" width = 25% height = 25% style="cursor:pointer" onclick="goPage('landingpage.html')">
             <a href="/templates\index.html">HOME</a>
-            <a href="#">ABOUT</a>
-            <a href="/templates\login.html">LOGIN</a>
-            <a href="/templates\signup.html">SIGN UP</a>
+            <a href="/templates\about.html">ABOUT</a>
+            <a id = "LOGIN" href="/templates\login.html">LOGIN</a>
+            <a id = "SIGNUP" href="/templates\signup.html">SIGN UP</a>
         </nav>
     </header>
 <head>
@@ -22,15 +22,16 @@
 <div class="login-container">
     <img src="/static\images\saselogo.png" alt = "SASE logo" width = 25% height = auto>
     <h2>Sign Up</h2>
-    <form action="/signup" method="POST">
-        <input type="text" name="email" placeholder="Email" required>
-        <input type="text" name="username" placeholder="Username" required>
-        <input type="text" name="password" placeholder="Password" required>
-        <input type="text" name="confirm_password" placeholder="Confirm Password" required>
+    <form id="signupForm" method="POST">
+        <input type="text" name="email" placeholder="Email" >
+        <input type="text" name="username" placeholder="Username" >
+        <input type="password" name="password" placeholder="Password" >
+        <input type="password" name="confirm_password" placeholder="Confirm Password" >
         <button type="submit">Finish</button>
     </form>
 </div>
 
 </body>
 <script src="/static\js\script.js"></script>
+<script src="/static\js\signup.js"></script>
 </html>

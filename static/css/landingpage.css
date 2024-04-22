@@ -1,67 +1,205 @@
-.small-sase-logo{
-    width: 55px;
-    height: 55px;
-    margin-left: 17px;
-    margin-top: 15px;
-    object-fit: contain;
-    display: inline-block;
+body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: rgb(235, 225, 211);
+    border-bottom: 60px solid #292A41;
+}
+
+header {
+    background-color: #292A41;
+    padding: 10px;
+    z-index: 1; /* changed nav to be on top*/
+    position:fixed; 
+    top: 0; 
+    width:100%; 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: rgb(235, 225, 211);
+    border-bottom: 60px solid #292A41;
+}
+
+header {
+    background-color: #292A41;
+    padding: 10px;
+    position:fixed; 
+    top: 0; 
+    width:100%; 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
 }
 
-.corner-title{
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    text-align: center;
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+
+}
+
+nav a {
+    text-decoration: none;
+    color: white;
+    padding-bottom: 2px;
+    padding: 8px;
+    font-size: 25px;
+    white-space: nowrap;
     margin-left: 5px;
-    font-size: 19px;
+    margin-right: auto;
+}
+
+header nav img{
+    width: 15%; 
+    margin-right: 50%; 
+    margin-left: 2%;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+nav a:hover {
+    background-color: rgb(132, 122, 122)
+}
+
+nav p {
+    margin: 0;
+}
+
+.content .textBox .join-now-link{
+    font-size: 20px;
+    padding-left: 95px;
+    margin-right: auto;
+}
+
+header nav img{
+    width: 15%; 
+    margin-right: 50%; 
+    margin-left: 2%;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+nav a:hover {
+    background-color: rgb(132, 122, 122)
+}
+
+nav p {
+    margin: 0;
+}
+
+.content .textBox .join-now-link{
+    font-size: 20px;
+    padding-left: 95px;
     display: inline-block;
-    padding-bottom: 15px;
-    padding-top: 10px;
-}
-.top-info{
-    width: 1520px;
-    height: 100px;
+    margin-top: 20px;
+    padding: 8px 20px;
+    background:#76885B;
+    color: #fff;
+    border-radius: 40px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-decoration: none;
+    margin-left: 95px;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+    padding: 8px 20px;
+    background:#76885B;
+    color: #fff;
+    border-radius: 40px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-decoration: none;
+    margin-left: 95px;
+    transition: background-color 0.3s ease;
 }
 
-.top-divider{
-    width: 1520px;
-    height: 4px;
-    margin-left: -10px;
-    background-color: black;
+.content .textBox .join-now-link:hover{
+    background-color: #2C7865;
 }
-.title{
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    font-size: 100px;
-    width: 500px;
-    line-height: 90px;
-    padding-bottom: 0px;
+
+
+
+.content{
+    position:relative;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 80px;
+    padding: 20px;
+}
+
+.content .textBox{
+    position: relative;
+    max-width: 600px;
+
+}
+.content .textBox .join-now-link:hover{
+    background-color: #2C7865;
+}
+
+
+
+.content{
+    position:relative;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 80px;
+    padding: 20px;
+}
+
+.content .textBox{
+    position: relative;
+    max-width: 600px;
+
+}
+.content .textBox h2{
+    color: #76885B;
+    font-size: 8em;
+    line-height: 1.4em;
+    font-weight: 900;
+    padding-left: 95px;
+    margin-bottom: -5px;
+    margin-top: 0;
+
+}
+.content .textBox p{
+    color: #292A41;
+    font-size: 2.5em;
+    padding-left: 100px;
+    margin-top: 0px;
+
 
 }
 
-body{
-    background-color: rgb(235, 225, 211);
-}
-.catchphrase{
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    padding-top: 0px;
-    font-size: 30px;
-    font-weight: bold;
-}
-.sign-up{
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    font-weight: bold;
-    background-color: rgb(235, 225, 211);
-    color: black;
-    border-color: rgb(0, 0, 0);
-    border-style: solid;
-    border-width: 1.9px;
-    padding-top: 8px;
-    padding-bottom: 8px;
-    padding-left: 55px;
-    padding-right: 55px;
-    border-radius: 1px;
-    cursor: pointer;
-    margin-right: 5px;
-    margin-left: 10px;
-    transition: opacity 0.15s;
+.content .textBox .Description{
+    color:#292A41;
+    width: 620px;
+    font-size: .9em;
+    line-height: 2em;
+    margin-top: -20px;
+    margin-left: 2px;
+    text-transform: uppercase;
 
+}
+
+.content .imgBox{
+    width: 650px;
+    height: 650px;
+    display: flex;
+    justify-content: flex-start;
+    padding-right: 10px;
+    margin-top: 20px;
+    margin-right: 100px;
 }
