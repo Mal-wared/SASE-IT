@@ -32,7 +32,7 @@ This application allows users to manage their tasks effectively. Users can creat
 2. Navigate to the project directory:
 
    ```bash
-   cd EZ2WEEKS
+   cd SASE-IT
    ```
 
 3. Install dependencies:
