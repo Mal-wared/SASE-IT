@@ -222,6 +222,7 @@ def signup():
         for user in users:
             print(user.username)
         return jsonify("Account created successfully")
+    return "ERROR"
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

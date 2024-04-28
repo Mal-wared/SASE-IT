@@ -2,9 +2,10 @@ body {
     font-family: sans-serif;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
     background-color: rgb(235, 225, 211);
-    border-bottom: 60px solid #292A41;
+    max-width: 100%;
+    overflow-x: hidden;
+    overflow-y: hidden;
 }
 
 header {
@@ -22,37 +23,28 @@ body {
     font-family: sans-serif;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
     background-color: rgb(235, 225, 211);
-    border-bottom: 60px solid #292A41;
 }
 
 header {
     background-color: #292A41;
     padding: 10px;
-    position:fixed; 
-    top: 0; 
-    width:100%; 
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
 }
 
 nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    position: relative;
-
 }
 
-nav a {
+nav a,
+nav p,
+nav button {
     text-decoration: none;
     color: white;
     padding-bottom: 2px;
     padding: 8px;
-    font-size: 25px;
+    font-size: 20px;
     white-space: nowrap;
     margin-left: 5px;
     margin-right: auto;
@@ -67,33 +59,8 @@ header nav img{
 }
 
 nav a:hover {
-    background-color: rgb(132, 122, 122)
-}
-
-nav p {
-    margin: 0;
-}
-
-.content .textBox .join-now-link{
-    font-size: 20px;
-    padding-left: 95px;
-    margin-right: auto;
-}
-
-header nav img{
-    width: 15%; 
-    margin-right: 50%; 
-    margin-left: 2%;
-    margin-bottom: 10px;
-    margin-top: 10px;
-}
-
-nav a:hover {
-    background-color: rgb(132, 122, 122)
-}
-
-nav p {
-    margin: 0;
+    background-color: rgb(132, 122, 122);
+    cursor: pointer;
 }
 
 .content .textBox .join-now-link{
@@ -114,7 +81,7 @@ nav p {
     padding: 8px 20px;
     background:#76885B;
     color: #fff;
-    border-radius: 40px;
+    border-radius: 140px;
     font-weight: 500;
     letter-spacing: 1px;
     text-decoration: none;
@@ -171,7 +138,7 @@ nav p {
     font-weight: 900;
     padding-left: 95px;
     margin-bottom: -5px;
-    margin-top: 0;
+    margin-top: -50px;
 
 }
 .content .textBox p{
@@ -187,6 +154,7 @@ nav p {
     color:#292A41;
     width: 620px;
     font-size: .9em;
+    font-weight: 500;
     line-height: 2em;
     margin-top: -20px;
     margin-left: 2px;
